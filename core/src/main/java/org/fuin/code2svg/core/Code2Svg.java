@@ -94,7 +94,17 @@ public final class Code2Svg {
         }
     }
 
-    private String convert(final Code2SvgConfig config, final String model) {
+    /**
+     * Converts a source string.
+     * 
+     * @param config
+     *            Configuration to use.
+     * @param srcFile
+     *            File to convert.
+     * 
+     * @return Converted text.
+     */
+    public String convert(final Code2SvgConfig config, final String model) {
         String src = tagAll(model, config.getElements());
         final String lineStart = "<tspan dy=\"1.2em\" x=\"10\"> </tspan>";
         src = lineStart + src.replace(LINE_SEPARATOR, LINE_SEPARATOR + lineStart);
@@ -102,6 +112,14 @@ public final class Code2Svg {
         return src;
     }
 
+    /**
+     * Converts a source file.
+     * 
+     * @param config
+     *            Configuration to use.
+     * @param srcFile
+     *            File to convert.
+     */
     public void convertFile(final Code2SvgConfig config, final File srcFile) {
 
         LOG.info("READ {}", srcFile);
