@@ -65,7 +65,7 @@ Simple Java command line application to run the converter: [app](app)
 
 ## Limitations
 Currently there is nothing implemented to prevent elements from 'overlapping' each other. 
-This means the final SVG image might not exactly be what you want (See #1).
+This means the final SVG image might not exactly be what you want (See [Issue #1](#1)).
 In most cases this is not really a problem, and it can be minimized by creating the right regular expressions.
 
 Snapshots
