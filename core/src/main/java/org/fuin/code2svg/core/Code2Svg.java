@@ -24,7 +24,10 @@ import java.io.IOException;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.fuin.utils4j.Utils4J;
 import org.fuin.utils4j.fileprocessor.FileHandler;
@@ -47,20 +50,24 @@ public final class Code2Svg {
     private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
     private String tagAll(final String source, final List<Element> elements) {
+        final List<Pattern> patternList = createPatternList(elements);
         String src = source;
         for (final Element element : elements) {
-            src = tag(src, element);
+            final List<PieceOfText> tagSegments = createList(patternList, src);
+            src = tag(tagSegments, src, element);
         }
         return src;
     }
 
-    private String tag(final String source, final Element el) {
+    private String tag(final List<PieceOfText> replacementst, final String source, final Element el) {
         final ElementMatcher m = el.matcher(source);
         final StringBuffer sb = new StringBuffer();
         while (m.find()) {
-            String found = source.substring(m.start(), m.end());
-            found = found.replace(LINE_SEPARATOR, el.getSvgEndTag() + LINE_SEPARATOR + el.getSvgStartTag());
-            m.appendReplacement(sb, el.getSvgStartTag() + found + el.getSvgEndTag());
+            if (!anyOverlaps(replacementst, m.start(), m.end())) {
+                String found = source.substring(m.start(), m.end());
+                found = found.replace(LINE_SEPARATOR, el.getSvgEndTag() + LINE_SEPARATOR + el.getSvgStartTag());
+                m.appendReplacement(sb, el.getSvgStartTag() + found + el.getSvgEndTag());
+            }
         }
         m.appendTail(sb);
         return sb.toString();
@@ -155,6 +162,35 @@ public final class Code2Svg {
         } catch (final MalformedURLException ex) {
             throw new RuntimeException("Failed to convert file to URL: " + file, ex);
         }
+    }
+
+    private static boolean anyOverlaps(final List<PieceOfText> replacements, final int start, final int end) {
+        for (final PieceOfText replacement : replacements) {
+            if (replacement.overlaps(start, end)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static List<PieceOfText> createList(final List<Pattern> patternList, final String src) {
+        final List<PieceOfText> list = new ArrayList<>();
+        for (final Pattern pattern : patternList) {
+            final Matcher m = pattern.matcher(src);
+            while (m.find()) {
+                final String found = src.substring(m.start(), m.end());
+                list.add(new PieceOfText(found, m.start(), m.end()));
+            }
+        }
+        return list;
+    }
+
+    private static List<Pattern> createPatternList(final List<Element> elements) {
+        final List<Pattern> list = new ArrayList<>();
+        for (final Element element : elements) {
+            list.add(Pattern.compile(Pattern.quote(element.getSvgStartTag()) + ".*" + Pattern.quote(element.getSvgEndTag())));
+        }
+        return list;
     }
 
 }

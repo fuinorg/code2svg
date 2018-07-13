@@ -19,6 +19,12 @@ context iso3166 {
 			/** Internal value. */
 			String value invariants Length(3, 3)
 			
+			// Single line comment that contains keywords and numbers: label 123
+			
+			/**
+			 * Multiline comment comment that contains keywords and numbers: label 123
+			 */
+			String abc
 		}
 			
 	}

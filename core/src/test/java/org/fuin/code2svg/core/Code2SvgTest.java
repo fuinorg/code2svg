@@ -55,6 +55,25 @@ public class Code2SvgTest {
 
     }
 
+    @Test
+    public void testConvert() throws IOException {
+
+        // PREPARE
+        final URL url = Code2Svg.class.getResource("/code-2-svg.xml");
+        final String configXml = Utils4J.readAsString(url, "utf-8", 1024);
+        final Code2SvgConfig config = JaxbUtils.unmarshal(configXml, Code2SvgConfig.class, RegExprElement.class);
+
+        final Code2Svg testee = new Code2Svg();
+
+        // TEST
+        final String result = testee.convert(config, "     slabel \"ALPHA3CC\" // Whatever slabel 123");
+
+        // VERIFY
+        assertThat(result).isEqualTo(
+                "<tspan dy=\"1.2em\" x=\"10\"> </tspan>     <tspan class=\"keyword\">slabel</tspan> <tspan class=\"string\">\"ALPHA3CC\"</tspan> <tspan class=\"sl-comment\">// Whatever slabel 123</tspan>");
+
+    }
+
     private static File copy(final String fromResource, final String toFile) {
         try {
             final URL url = Code2Svg.class.getResource(fromResource);
