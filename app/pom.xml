@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.fuin.code2svg</groupId>
+		<artifactId>code2svg</artifactId>
+		<version>0.1.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<artifactId>code2svg-app</artifactId>
+	<packaging>jar</packaging>
+
+	<description>Java application that converts code into SVG text with syntax highlighting</description>
+
+	<dependencies>
+
+		<!-- compile -->
+
+		<dependency>
+			<groupId>org.fuin.code2svg</groupId>
+			<artifactId>code2svg-core</artifactId>
+			<version>0.1.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.22</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.fuin</groupId>
+			<artifactId>ext4logback</artifactId>
+			<version>0.2.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.1.8</version>
+		</dependency>
+
+		<!-- test -->
+
+	</dependencies>
+	
+	<build>
+	
+	<plugins>
+	
+			<plugin>
+			    <groupId>org.codehaus.mojo</groupId>
+			    <artifactId>wagon-maven-plugin</artifactId>
+			    <version>1.0</version>
+			    <executions>
+			    
+			        <!-- Upload ZIP file -->
+			        <execution>
+			            <id>upload-zip</id>
+			            <phase>deploy</phase>
+			            <goals>
+			                <goal>upload-single</goal>
+			            </goals>
+			            <configuration>
+			                <fromFile>target/${project.artifactId}-${project.version}-bin.zip</fromFile>
+			            	<serverId>fuinorg.jfrog.io</serverId>
+			                <url>https://fuinorg.jfrog.io/fuinorg/files/${project.artifactId}/</url>			                
+			            </configuration>
+			        </execution>
+
+			        <!-- Upload targ.gz file -->
+			        <execution>
+			            <id>upload-tar-gz</id>
+			            <phase>deploy</phase>
+			            <goals>
+			                <goal>upload-single</goal>
+			            </goals>
+			            <configuration>
+			                <fromFile>target/${project.artifactId}-${project.version}-bin.tar.gz</fromFile>
+			            	<serverId>fuinorg.jfrog.io</serverId>
+			                <url>https://fuinorg.jfrog.io/fuinorg/files/${project.artifactId}/</url>			                
+			            </configuration>
+			        </execution>
+			        
+			    </executions>
+			</plugin>
+ 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.1.1</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/lib</outputDirectory>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>false</overWriteSnapshots>
+							<overWriteIfNewer>true</overWriteIfNewer>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+      			
+			<plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-assembly-plugin</artifactId>
+		        <version>3.1.0</version>
+				<configuration>
+					<descriptors>
+						<descriptor>${project.basedir}/src/main/assembly/assembly.xml</descriptor>
+					</descriptors>
+				</configuration>
+				<executions>
+		          <execution>
+		            <phase>package</phase>
+		            <goals>
+		              <goal>single</goal>
+		            </goals>
+		          </execution>
+		        </executions>
+   			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+	
+	</plugins>
+	
+	</build>
+	
+	
+
+</project>
