@@ -35,4 +35,10 @@ If the source file is a directory, the 'file-extension' in the configuration fil
 </code2svg>
 ```
 
+If you just want to generate the SVG you can use the following command:
+```
+mvn -o org.fuin.code2svg:code2svg-m2-plugin:0.1.0-SNAPSHOT:convert
+```
+(The "-o" enables the "offline" mode and avoid loading dependencies if you've already built successfully once before). 
+
 
