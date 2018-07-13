@@ -106,8 +106,8 @@ public final class Code2Svg {
      * 
      * @param config
      *            Configuration to use.
-     * @param srcFile
-     *            File to convert.
+     * @param model
+     *            Source text to convert.
      * 
      * @return Converted text.
      */
