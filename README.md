@@ -22,7 +22,7 @@ value-object Alpha3CountryCode base String {
 }
 ```
 Example output:
-<table><tr><td><img src="https://cdn.rawgit.com/fuinorg/code2svg/cc1d9c65/example.ddd.svg" width="500" height="200"></td></tr></table>
+<table><tr><td><img src="https://cdn.rawgit.com/fuinorg/code2svg/cc1d9c65/example.ddd.svg" width="880" height="200"></td></tr></table>
 
 
 
