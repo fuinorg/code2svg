@@ -22,8 +22,10 @@ value-object Alpha3CountryCode base String {
 }
 ```
 Example output:
-<img src="https://cdn.rawgit.com/fuinorg/code2svg/master/example.ddd.svg" border="1" width="100%" height="200">
+<img src="https://cdn.rawgit.com/fuinorg/code2svg/cc1d9c65/example.ddd.svg" border="1" width="100%" height="200">
 <img src="example.ddd.svg" border="1" width="100%" height="200">
+<img src="https://raw.githubusercontent.com/fuinorg/code2svg/master/example.ddd.svg" border="1" width="100%" height="200">
+<img src="https://raw.githubusercontent.com/fuinorg/code2svg/master/example.ddd.svg?sanitize=true" border="1" width="100%" height="200">
 
 
 ## Configuration
