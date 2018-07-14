@@ -68,9 +68,10 @@ public class Code2SvgConfigTest {
 
         // TEST
         final String result = JaxbUtils.marshal(testee, Code2SvgConfig.class, RegExprElement.class);
+        System.out.println(result);
 
         // VERIFY
-        final String expected = "<code2svg file-extension=\".ddd\"><reg-expr-element name =\"string\" css=\"fill: rgb(42, 0, 255)\" pattern=\"&quot;.*?&quot;\" /></code2svg>";
+        final String expected = "<code2svg file-extension=\".ddd\" text-css=\"font-size: 12pt; font-family: monospace\"><reg-expr-element name =\"string\" css=\"fill: rgb(42, 0, 255)\" pattern=\"&quot;.*?&quot;\" /></code2svg>";
         XMLAssert.assertXMLEqual(JaxbUtils.XML_PREFIX + expected, result);
 
     }

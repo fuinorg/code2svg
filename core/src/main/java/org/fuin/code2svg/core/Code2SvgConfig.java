@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
@@ -47,6 +48,10 @@ public class Code2SvgConfig {
     @XmlAttribute(name = "height")
     private Integer height;
 
+    @NotNull
+    @XmlAttribute(name = "text-css")
+    private String textCss;
+    
     @NotEmpty
     @Valid
     @XmlAnyElement(lax = true)
@@ -88,6 +93,16 @@ public class Code2SvgConfig {
     public final Integer getHeight() {
         return height;
     }
+    
+    /**
+     * Returns the CSS for the text.
+     * 
+     * @return CSS like "font-size: 11pt; font-family: monospace"
+     */
+    @NotNull
+    public final String getTextCss() {
+        return textCss;
+    }
 
     /**
      * Returns a list of all elements.
@@ -112,6 +127,12 @@ public class Code2SvgConfig {
         elements.add(element);
     }
 
+    public void afterUnmarshal(final Unmarshaller unmarshaller, final Object parent) {
+        if (textCss == null) {
+            textCss = "font-size: 12pt; font-family: monospace";
+        }
+    }
+    
     @Override
     public final String toString() {
         return "Code2SvgConfig [fileExtension=" + fileExtension + ", width=" + width + ", height=" + height + ", elements=" + elements
@@ -145,6 +166,7 @@ public class Code2SvgConfig {
             config.height = other.height;
             config.width = other.width;
             config.fileExtension = other.fileExtension;
+            config.textCss = other.textCss;
             config.elements = new ArrayList<>(other.elements);
             return this;
         }
@@ -187,6 +209,18 @@ public class Code2SvgConfig {
             config.height = height;
             return this;
         }
+        
+        /**
+         * Sets the text CSS.
+         * 
+         * @param textCss CSS to use for text like "font-size: 12pt; font-family: monospace"
+         * 
+         * @return Builder
+         */
+        public final Builder textCss(@Nullable final String textCss) {
+            config.textCss = textCss;
+            return this;
+        }
 
         /**
          * Sets the elements.
@@ -221,6 +255,9 @@ public class Code2SvgConfig {
          */
         public Code2SvgConfig build() {
             final Code2SvgConfig result = config;
+            if (config.textCss == null) {
+                config.textCss = "font-size: 12pt; font-family: monospace";
+            }
             config = new Code2SvgConfig();
             return result;
         }
