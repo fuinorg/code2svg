@@ -105,12 +105,12 @@ public final class Code2Svg {
 
     private String widthHeighMarkup(final Code2SvgConfig config) {
         final StringBuilder sb = new StringBuilder();
-        if (config.getWidth() != 0) {
+        if (config.getWidth() != null) {
             sb.append("width=\"");
             sb.append(config.getWidth());
             sb.append("\" ");
         }
-        if (config.getHeight() != 0) {
+        if (config.getHeight() != null) {
             sb.append("height=\"");
             sb.append(config.getHeight());
             sb.append("\" ");
