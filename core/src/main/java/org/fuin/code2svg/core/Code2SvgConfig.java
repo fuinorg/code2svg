@@ -178,7 +178,7 @@ public class Code2SvgConfig {
         /**
          * Sets the default height for created SVG images.
          * 
-         * @param width
+         * @param height
          *            Default height.
          * 
          * @return Builder.
