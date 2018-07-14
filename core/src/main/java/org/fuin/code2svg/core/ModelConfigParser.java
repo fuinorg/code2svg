@@ -74,6 +74,9 @@ public final class ModelConfigParser {
         if (jsonObj.containsKey("height")) {
             builder.height(jsonObj.getInt("height"));
         }
+        if (jsonObj.containsKey("text-css")) {
+            builder.textCss(jsonObj.getString("text-css"));
+        }
         return builder.build();
     }
 

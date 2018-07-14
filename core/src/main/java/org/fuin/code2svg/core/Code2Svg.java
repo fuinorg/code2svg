@@ -87,7 +87,7 @@ public final class Code2Svg {
             writer.write("<desc>" + description + "</desc>" + LINE_SEPARATOR);
             writer.write("<style>" + LINE_SEPARATOR);
             writer.write("<![CDATA[" + LINE_SEPARATOR);
-            writer.write("text { font-size: 11pt; font-family: monospace }" + LINE_SEPARATOR);
+            writer.write("text { " + config.getTextCss() + " }" + LINE_SEPARATOR);
             for (final Element element : elements) {
                 writer.write("." + element.getName() + " { " + element.getCSS() + " }" + LINE_SEPARATOR);
             }
