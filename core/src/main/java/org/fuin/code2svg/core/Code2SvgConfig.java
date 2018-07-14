@@ -36,6 +36,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "code2svg")
 public class Code2SvgConfig {
 
+    private static final String DEFAULT_TEXT_CSS = "font-size: 11pt; font-family: monospace";
+    
     @Nullable
     @XmlAttribute(name = "file-extension")
     private String fileExtension;
@@ -129,7 +131,7 @@ public class Code2SvgConfig {
 
     public void afterUnmarshal(final Unmarshaller unmarshaller, final Object parent) {
         if (textCss == null) {
-            textCss = "font-size: 12pt; font-family: monospace";
+            textCss = DEFAULT_TEXT_CSS;
         }
     }
     
@@ -256,7 +258,7 @@ public class Code2SvgConfig {
         public Code2SvgConfig build() {
             final Code2SvgConfig result = config;
             if (config.textCss == null) {
-                config.textCss = "font-size: 12pt; font-family: monospace";
+                config.textCss = DEFAULT_TEXT_CSS;
             }
             config = new Code2SvgConfig();
             return result;

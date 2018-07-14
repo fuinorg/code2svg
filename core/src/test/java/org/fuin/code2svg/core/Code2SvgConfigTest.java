@@ -71,7 +71,7 @@ public class Code2SvgConfigTest {
         System.out.println(result);
 
         // VERIFY
-        final String expected = "<code2svg file-extension=\".ddd\" text-css=\"font-size: 12pt; font-family: monospace\"><reg-expr-element name =\"string\" css=\"fill: rgb(42, 0, 255)\" pattern=\"&quot;.*?&quot;\" /></code2svg>";
+        final String expected = "<code2svg file-extension=\".ddd\" text-css=\"font-size: 11pt; font-family: monospace\"><reg-expr-element name =\"string\" css=\"fill: rgb(42, 0, 255)\" pattern=\"&quot;.*?&quot;\" /></code2svg>";
         XMLAssert.assertXMLEqual(JaxbUtils.XML_PREFIX + expected, result);
 
     }
