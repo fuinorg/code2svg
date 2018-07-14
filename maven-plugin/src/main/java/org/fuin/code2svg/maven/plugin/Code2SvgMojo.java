@@ -140,23 +140,23 @@ public final class Code2SvgMojo extends AbstractMojo {
 	this.config = configFile;
     }
 
-    
     /**
      * Returns the paths and names of source files or directories.
      * 
      * @return File array.
      */
     public final String[] getSourceFilesDirs() {
-        return sourceFilesDirs;
+	return sourceFilesDirs;
     }
 
     /**
      * Sets the path and names of source files or directories to convert.
      * 
-     * @param sourceFilesDirs File array.
+     * @param sourceFilesDirs
+     *            File array.
      */
     public void setSourceFilesDirs(String[] sourceFilesDirs) {
-        this.sourceFilesDirs = sourceFilesDirs;
+	this.sourceFilesDirs = sourceFilesDirs;
     }
 
     private static URL url(File file) {

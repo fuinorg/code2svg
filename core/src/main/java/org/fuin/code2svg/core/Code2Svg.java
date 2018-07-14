@@ -74,13 +74,15 @@ public final class Code2Svg {
     }
 
     private void writeToFile(final File file, final String src, final String title, final String description,
-            final List<Element> elements) {
+            final Code2SvgConfig config) {
 
+        final List<Element> elements = config.getElements();
+        
         try (final Writer writer = new BufferedWriter(new FileWriter(file))) {
 
             writer.write(XML_PREFIX + LINE_SEPARATOR);
             writer.write(DOC_TYPE + LINE_SEPARATOR);
-            writer.write("<svg version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\">" + LINE_SEPARATOR);
+            writer.write("<svg version=\"1.1\" " + widthHeighMarkup(config) + "xmlns=\"http://www.w3.org/2000/svg\">" + LINE_SEPARATOR);
             writer.write("<title>" + title + "</title>" + LINE_SEPARATOR);
             writer.write("<desc>" + description + "</desc>" + LINE_SEPARATOR);
             writer.write("<style>" + LINE_SEPARATOR);
@@ -101,6 +103,21 @@ public final class Code2Svg {
         }
     }
 
+    private String widthHeighMarkup(final Code2SvgConfig config) {
+        final StringBuilder sb = new StringBuilder();
+        if (config.getWidth() != 0) {
+            sb.append("width=\"");
+            sb.append(config.getWidth());
+            sb.append("\" ");
+        }
+        if (config.getHeight() != 0) {
+            sb.append("height=\"");
+            sb.append(config.getHeight());
+            sb.append("\" ");
+        }
+        return sb.toString();
+    }
+
     /**
      * Converts a source string.
      * 
@@ -112,7 +129,9 @@ public final class Code2Svg {
      * @return Converted text.
      */
     public String convert(final Code2SvgConfig config, final String model) {
-        String src = tagAll(model, config.getElements());
+        final Matcher matcher = ModelConfigParser.PATTERN.matcher(model);
+        String src = matcher.replaceAll("");
+        src = tagAll(src, config.getElements());
         final String lineStart = "<tspan dy=\"1.2em\" x=\"10\"> </tspan>";
         src = lineStart + src.replace(LINE_SEPARATOR, LINE_SEPARATOR + lineStart);
         src = src.replace("\t", "    ");
@@ -133,12 +152,13 @@ public final class Code2Svg {
 
         final File targetFile = new File(srcFile.getParentFile(), srcFile.getName() + ".svg");
         final String model = Utils4J.readAsString(url(srcFile), "utf-8", 1024);
+        final Code2SvgConfig cfg = new ModelConfigParser(config).parse(model);
 
-        String src = convert(config, model);
+        String src = convert(cfg, model);
         String title = srcFile.getName();
         String description = "Converted from " + srcFile.getName() + " to " + targetFile.getName();
 
-        writeToFile(targetFile, src, title, description, config.getElements());
+        writeToFile(targetFile, src, title, description, cfg);
 
         LOG.info("WRITE {}", targetFile);
 

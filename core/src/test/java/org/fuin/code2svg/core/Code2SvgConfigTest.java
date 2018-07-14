@@ -64,7 +64,7 @@ public class Code2SvgConfigTest {
 
         // PREPARE
         final RegExprElement el = new RegExprElement("string", "fill: rgb(42, 0, 255)", "\".*?\"");
-        final Code2SvgConfig testee = new Code2SvgConfig(".ddd", el);
+        final Code2SvgConfig testee = new Code2SvgConfig.Builder().fileExtension(".ddd").addElement(el).build();
 
         // TEST
         final String result = JaxbUtils.marshal(testee, Code2SvgConfig.class, RegExprElement.class);

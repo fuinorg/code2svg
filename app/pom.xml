@@ -43,51 +43,57 @@
 			<version>1.1.8</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.eclipse.jgit</groupId>
+			<artifactId>org.eclipse.jgit</artifactId>
+			<version>5.0.1.201806211838-r</version>
+		</dependency>
+
 		<!-- test -->
 
 	</dependencies>
-	
-	<build>
-	
-	<plugins>
-	
-			<plugin>
-			    <groupId>org.codehaus.mojo</groupId>
-			    <artifactId>wagon-maven-plugin</artifactId>
-			    <version>1.0</version>
-			    <executions>
-			    
-			        <!-- Upload ZIP file -->
-			        <execution>
-			            <id>upload-zip</id>
-			            <phase>deploy</phase>
-			            <goals>
-			                <goal>upload-single</goal>
-			            </goals>
-			            <configuration>
-			                <fromFile>target/${project.artifactId}-${project.version}-bin.zip</fromFile>
-			            	<serverId>jfrog</serverId>
-			                <url>https://fuinorg.jfrog.io/fuinorg/files/${project.artifactId}/</url>			                
-			            </configuration>
-			        </execution>
 
-			        <!-- Upload targ.gz file -->
-			        <execution>
-			            <id>upload-tar-gz</id>
-			            <phase>deploy</phase>
-			            <goals>
-			                <goal>upload-single</goal>
-			            </goals>
-			            <configuration>
-			                <fromFile>target/${project.artifactId}-${project.version}-bin.tar.gz</fromFile>
-			            	<serverId>jfrog</serverId>
-			                <url>https://fuinorg.jfrog.io/fuinorg/files/${project.artifactId}/</url>			                
-			            </configuration>
-			        </execution>
-			        
-			    </executions>
+	<build>
+
+		<plugins>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>wagon-maven-plugin</artifactId>
+				<version>1.0</version>
+				<executions>
+
+					<!-- Upload ZIP file -->
+					<execution>
+						<id>upload-zip</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>upload-single</goal>
+						</goals>
+						<configuration>
+							<fromFile>target/${project.artifactId}-${project.version}-bin.zip</fromFile>
+							<serverId>jfrog</serverId>
+							<url>https://fuinorg.jfrog.io/fuinorg/files/${project.artifactId}/</url>
+						</configuration>
+					</execution>
+
+					<!-- Upload targ.gz file -->
+					<execution>
+						<id>upload-tar-gz</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>upload-single</goal>
+						</goals>
+						<configuration>
+							<fromFile>target/${project.artifactId}-${project.version}-bin.tar.gz</fromFile>
+							<serverId>jfrog</serverId>
+							<url>https://fuinorg.jfrog.io/fuinorg/files/${project.artifactId}/</url>
+						</configuration>
+					</execution>
+
+				</executions>
 			</plugin>
- 
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -108,25 +114,25 @@
 					</execution>
 				</executions>
 			</plugin>
-      			
+
 			<plugin>
-		        <groupId>org.apache.maven.plugins</groupId>
-		        <artifactId>maven-assembly-plugin</artifactId>
-		        <version>3.1.0</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.1.0</version>
 				<configuration>
 					<descriptors>
 						<descriptor>${project.basedir}/src/main/assembly/assembly.xml</descriptor>
 					</descriptors>
 				</configuration>
 				<executions>
-		          <execution>
-		            <phase>package</phase>
-		            <goals>
-		              <goal>single</goal>
-		            </goals>
-		          </execution>
-		        </executions>
-   			</plugin>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -136,11 +142,11 @@
 					<skip>true</skip>
 				</configuration>
 			</plugin>
-	
-	</plugins>
-	
+
+		</plugins>
+
 	</build>
-	
-	
+
+
 
 </project>
