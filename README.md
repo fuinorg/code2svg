@@ -85,8 +85,8 @@ The project is splitted into three separate modules: The core library, a maven p
 - **[Application](app)** Simple Java command line application to run the converter.
 
 ## Limitations
-The order of the tags in the XML configuration determine the order of tagging the source code fragments.
-Elements that locate large blocks of text like comments should be evaluated first to avoid finding other elements in that area.
+The order of the tags in the XML configuration determines the order in which source code fragments are replaced.
+Elements that are used to locate large blocks of text (like comments) should be evaluated first to avoid finding other elements in that area.
 Example: Keywords, strings or numbers that are within a comment.  
 
 Snapshots
