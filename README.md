@@ -85,7 +85,8 @@ You can overwrite the default width and height from the XML configuration adding
 
 ### Defining XML entity chars
 Sometimes it's handy to insert some [XML character entities](https://www.w3schools.com/charsets/ref_utf_dingbats.asp) in the source code.
-For example ``&#x277A;`` can be added as ``°°x277A°°`` and will be rendered as &#x277A;.
+
+Example: ``&#x277A;`` can be added as ``°°x277A°°`` in the source and will be rendered as &#x277A;
 
 ## Modules
 The project is splitted into three separate modules: The core library, a maven plugin and the standalone application.
