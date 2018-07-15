@@ -91,14 +91,14 @@ public class Code2SvgConfigTest {
         assertThat(testee.getElements()).containsOnly(expectedEl);
 
     }
-    
+
     @Test
     public final void testUnmarshalMultipleElements() throws Exception {
 
         // PREPARE
         final URL url = Code2Svg.class.getResource("/code-2-svg.xml");
-        final String xml =  Utils4J.readAsString(url, "utf-8", 1024);
-        
+        final String xml = Utils4J.readAsString(url, "utf-8", 1024);
+
         final List<String> keywords = new ArrayList<>();
         keywords.add("acceptable");
         keywords.add("aggregate");
@@ -156,13 +156,13 @@ public class Code2SvgConfigTest {
         keywords.add("value-object");
         keywords.add("weak");
         keywords.add("workflow");
-        
-        final Element[] elements = new Element[] { new RegExprElement("whatever", "fill: red", "begin.*end"), 
+
+        final Element[] elements = new Element[] { new RegExprElement("whatever", "fill: red", "begin.*end"),
                 new StringElement("string", "fill: rgb(42, 0, 255)", false),
                 new MultiLineCommentElement("ml-comment", "fill: rgb(63, 127, 95)"),
                 new SingleLineCommentElement("sl-comment", "fill: rgb(63, 127, 95)"),
-                new RegExprElement("keyword", "fill: rgb(127, 0, 85); font-weight: bold", keywords),
-                new NumberElement("number", "fill: rgb(125, 125, 125)") };
+                new NumberElement("number", "fill: rgb(125, 125, 125)"),
+                new KeywordElement("keyword", "fill: rgb(127, 0, 85); font-weight: bold", keywords) };
 
         // TEST
         final Code2SvgConfig testee = JaxbUtils.unmarshal(xml, (Class<?>[]) Code2SvgUtils.JAXB_CLASSES.toArray());
