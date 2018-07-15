@@ -9,12 +9,13 @@ A minimalistic converter that transforms code into SVG text with syntax highligh
 ## Overview
 Example input from [DDD DSL language](https://github.com/fuinorg/org.fuin.dsl.ddd):
 ```
+@code2svg:{"width":800, "height": 300}
 /**
  * ISO 3166-1 alpha-3 three-letter country code defined in ISO 3166-1.
  */
-value-object Alpha3CountryCode base String {
+value-object °°x2777°° Alpha3CountryCode base String {
     
-    label "Alpha-3 country code" // Used in UI
+    label "Alpha-3 country code" // Used in UI 
     
     /** Internal value. */
     String value invariants Length(3, 3)
@@ -22,7 +23,7 @@ value-object Alpha3CountryCode base String {
 }
 ```
 Example output:
-<table><tr><td><img src="https://cdn.rawgit.com/fuinorg/code2svg/cc1d9c65/example.ddd.svg" width="880" height="200"></td></tr></table>
+<table><tr><td><img src="https://cdn.rawgit.com/fuinorg/code2svg/089d2faa99e85b1e832a4a2c42b091a0aa9ee46b/example.ddd.svg"></td></tr></table>
 (Caution: Image might be broken in Internet Explorer and Edge - Try Firefox or Chromium)
 
 ## Configuration
@@ -30,7 +31,7 @@ Example output:
 The highlighting is configured using a simple XML file:
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<code2svg file-extension=".ddd">
+<code2svg file-extension=".ddd" width="800" height="800">
 	<reg-expr-element name="whatever" css="fill: red" pattern="begin.*end" />
 	<ml-comment-element name="ml-comment" css="fill: rgb(63, 127, 95)" />
 	<sl-comment-element name="sl-comment" css="fill: rgb(63, 127, 95)" />
@@ -45,6 +46,8 @@ The highlighting is configured using a simple XML file:
 </code2svg>
 ```
 - **file-extension** is used for locating the code files inside a directory.
+- **width** defines the default width used for all generated SVG images. You can overwrite it by setting a width/height per file (See below). 
+- **height** defines the default height used for all generated SVG images. You can overwrite it by setting a width/height per file (See below).
 - **name** is a unique identifier that will be used in the SVG markup as a CSS class.
 - **css** is the CSS  for the class that will be used to style the element.
 
@@ -76,6 +79,13 @@ Used to locate numeric values in the source code.
 
 ### keyword-element
 Used to locate keywords in the source code.
+
+### Overwrite default width and height
+You can overwrite the default width and height from the XML configuration adding ``@code2svg:{"width":800, "height": 300}`` somewhere in the source file.
+
+### Defining XML entity chars
+Sometimes it's handy to insert some [XML character entities](https://www.w3schools.com/charsets/ref_utf_dingbats.asp) in the source code.
+For example ``&#x277A;`` can be added as ``°°x277A°°`` and will be rendered as &#x277A;.
 
 ## Modules
 The project is splitted into three separate modules: The core library, a maven plugin and the standalone application.
