@@ -68,7 +68,6 @@ public class Code2SvgConfigTest {
 
         // TEST
         final String result = JaxbUtils.marshal(testee, (Class<?>[]) Code2SvgUtils.JAXB_CLASSES.toArray());
-        System.out.println(result);
 
         // VERIFY
         final String expected = "<code2svg file-extension=\".ddd\" text-css=\"font-size: 11pt; font-family: monospace\"><reg-expr-element name =\"string\" css=\"fill: rgb(42, 0, 255)\" pattern=\"&quot;.*?&quot;\" /></code2svg>";
