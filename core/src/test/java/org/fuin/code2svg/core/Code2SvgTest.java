@@ -43,7 +43,7 @@ public class Code2SvgTest {
         final File actualTargetFile = new File(sourceFile.getParentFile(), sourceFile.getName() + ".svg");
         final File expectedTargetFile = copy("/Alpha3CountryCode.ddd.svg", "Alpha3CountryCode-expected.ddd.svg");
         final String configXml = Utils4J.readAsString(url(configFile), "utf-8", 1024);
-        final Code2SvgConfig config = JaxbUtils.unmarshal(configXml, Code2SvgConfig.class, RegExprElement.class);
+        final Code2SvgConfig config = JaxbUtils.unmarshal(configXml, (Class<?>[]) Code2SvgUtils.JAXB_CLASSES.toArray());
 
         final Code2Svg testee = new Code2Svg();
 
@@ -61,7 +61,7 @@ public class Code2SvgTest {
         // PREPARE
         final URL url = Code2Svg.class.getResource("/code-2-svg.xml");
         final String configXml = Utils4J.readAsString(url, "utf-8", 1024);
-        final Code2SvgConfig config = JaxbUtils.unmarshal(configXml, Code2SvgConfig.class, RegExprElement.class);
+        final Code2SvgConfig config = JaxbUtils.unmarshal(configXml, (Class<?>[]) Code2SvgUtils.JAXB_CLASSES.toArray());
 
         final Code2Svg testee = new Code2Svg();
 

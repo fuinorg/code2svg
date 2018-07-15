@@ -28,6 +28,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.fuin.code2svg.core.Code2Svg;
 import org.fuin.code2svg.core.Code2SvgConfig;
+import org.fuin.code2svg.core.Code2SvgUtils;
 import org.fuin.code2svg.core.RegExprElement;
 import org.fuin.utils4j.JaxbUtils;
 import org.fuin.utils4j.Utils4J;
@@ -41,8 +42,7 @@ import org.slf4j.impl.StaticLoggerBinder;
 @Mojo(name = "convert", defaultPhase = LifecyclePhase.GENERATE_RESOURCES, requiresProject = false)
 public final class Code2SvgMojo extends AbstractMojo {
 
-    private static final Logger LOG = LoggerFactory
-	    .getLogger(Code2SvgMojo.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Code2SvgMojo.class);
 
     /**
      * Path and file of the configuration XML. Defaults to "code2svg.xml".
@@ -51,15 +51,13 @@ public final class Code2SvgMojo extends AbstractMojo {
     private String config;
 
     /**
-     * List of files or directories to convert. Defaults to
-     * "src/main/resources".
+     * List of files or directories to convert. Defaults to "src/main/resources".
      */
     @Parameter(name = "source-files-dirs")
     private String[] sourceFilesDirs;
 
     /**
-     * Checks if a variable is not <code>null</code> and throws an
-     * <code>IllegalNullArgumentException</code> if this rule is violated.
+     * Checks if a variable is not <code>null</code> and throws an <code>IllegalNullArgumentException</code> if this rule is violated.
      * 
      * @param name
      *            Name of the variable to be displayed in an error message.
@@ -69,50 +67,46 @@ public final class Code2SvgMojo extends AbstractMojo {
      * @throws MojoExecutionException
      *             Checked value was NULL.
      */
-    protected final void checkNotNull(final String name, final Object value)
-	    throws MojoExecutionException {
-	if (value == null) {
-	    throw new MojoExecutionException(name + " cannot be null!");
-	}
+    protected final void checkNotNull(final String name, final Object value) throws MojoExecutionException {
+        if (value == null) {
+            throw new MojoExecutionException(name + " cannot be null!");
+        }
     }
 
     @Override
     public final void execute() throws MojoExecutionException {
-	StaticLoggerBinder.getSingleton().setMavenLog(getLog());
-	init();
+        StaticLoggerBinder.getSingleton().setMavenLog(getLog());
+        init();
 
-	LOG.info("config={}", config);
-	final Object[] args = sourceFilesDirs;
-	LOG.info("sourceFiles={}", args);
+        LOG.info("config={}", config);
+        final Object[] args = sourceFilesDirs;
+        LOG.info("sourceFiles={}", args);
 
-	final File configFile = new File(config);
-	final String configXml = Utils4J.readAsString(url(configFile), "utf-8",
-		1024);
-	final Code2SvgConfig config = JaxbUtils.unmarshal(configXml,
-		Code2SvgConfig.class, RegExprElement.class);
+        final File configFile = new File(config);
+        final String configXml = Utils4J.readAsString(url(configFile), "utf-8", 1024);
+        final Code2SvgConfig config = JaxbUtils.unmarshal(configXml, (Class<?>[]) Code2SvgUtils.JAXB_CLASSES.toArray());
 
-	LOG.info("Converting '{}' sources to SVG files...",
-		config.getFileExtension());
+        LOG.info("Converting '{}' sources to SVG files...", config.getFileExtension());
 
-	final Code2Svg converter = new Code2Svg();
-	for (int i = 0; i < sourceFilesDirs.length; i++) {
-	    final File file = new File(sourceFilesDirs[i]);
-	    if (file.isDirectory()) {
-		converter.convertDir(config, file);
-	    } else {
-		converter.convertFile(config, file);
-	    }
-	}
+        final Code2Svg converter = new Code2Svg();
+        for (int i = 0; i < sourceFilesDirs.length; i++) {
+            final File file = new File(sourceFilesDirs[i]);
+            if (file.isDirectory()) {
+                converter.convertDir(config, file);
+            } else {
+                converter.convertFile(config, file);
+            }
+        }
 
     }
 
     private void init() throws MojoExecutionException {
-	if (config == null) {
-	    config = "code2svg.xml";
-	}
-	if (sourceFilesDirs == null || sourceFilesDirs.length == 0) {
-	    sourceFilesDirs = new String[] { "src/main/resources" };
-	}
+        if (config == null) {
+            config = "code2svg.xml";
+        }
+        if (sourceFilesDirs == null || sourceFilesDirs.length == 0) {
+            sourceFilesDirs = new String[] { "src/main/resources" };
+        }
     }
 
     /**
@@ -124,10 +118,10 @@ public final class Code2SvgMojo extends AbstractMojo {
      *             Error initializing the variable.
      */
     public final String getConfigFile() throws MojoExecutionException {
-	if (config == null) {
-	    init();
-	}
-	return config;
+        if (config == null) {
+            init();
+        }
+        return config;
     }
 
     /**
@@ -137,7 +131,7 @@ public final class Code2SvgMojo extends AbstractMojo {
      *            Config file to use.
      */
     public final void setConfigFile(final String configFile) {
-	this.config = configFile;
+        this.config = configFile;
     }
 
     /**
@@ -146,7 +140,7 @@ public final class Code2SvgMojo extends AbstractMojo {
      * @return File array.
      */
     public final String[] getSourceFilesDirs() {
-	return sourceFilesDirs;
+        return sourceFilesDirs;
     }
 
     /**
@@ -156,16 +150,15 @@ public final class Code2SvgMojo extends AbstractMojo {
      *            File array.
      */
     public void setSourceFilesDirs(String[] sourceFilesDirs) {
-	this.sourceFilesDirs = sourceFilesDirs;
+        this.sourceFilesDirs = sourceFilesDirs;
     }
 
     private static URL url(File file) {
-	try {
-	    return file.toURI().toURL();
-	} catch (final MalformedURLException ex) {
-	    throw new RuntimeException("Failed to convert file to URL: " + file,
-		    ex);
-	}
+        try {
+            return file.toURI().toURL();
+        } catch (final MalformedURLException ex) {
+            throw new RuntimeException("Failed to convert file to URL: " + file, ex);
+        }
     }
 
 }

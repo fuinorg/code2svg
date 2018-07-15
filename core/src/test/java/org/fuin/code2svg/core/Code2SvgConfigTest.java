@@ -67,7 +67,7 @@ public class Code2SvgConfigTest {
         final Code2SvgConfig testee = new Code2SvgConfig.Builder().fileExtension(".ddd").addElement(el).build();
 
         // TEST
-        final String result = JaxbUtils.marshal(testee, Code2SvgConfig.class, RegExprElement.class);
+        final String result = JaxbUtils.marshal(testee, (Class<?>[]) Code2SvgUtils.JAXB_CLASSES.toArray());
         System.out.println(result);
 
         // VERIFY
@@ -84,7 +84,7 @@ public class Code2SvgConfigTest {
         final String xml = "<code2svg><reg-expr-element name =\"string\" css=\"fill: rgb(42, 0, 255)\" pattern=\"&quot;.*?&quot;\" /></code2svg>";
 
         // TEST
-        final Code2SvgConfig testee = JaxbUtils.unmarshal(xml, Code2SvgConfig.class, RegExprElement.class);
+        final Code2SvgConfig testee = JaxbUtils.unmarshal(xml, (Class<?>[]) Code2SvgUtils.JAXB_CLASSES.toArray());
 
         // VERIFY
         assertThat(testee).isNotNull();
@@ -157,14 +157,14 @@ public class Code2SvgConfigTest {
         keywords.add("weak");
         keywords.add("workflow");
         
-        final Element[] elements = new Element[] { new RegExprElement("string", "fill: rgb(42, 0, 255)", "\".*?\""),
+        final Element[] elements = new Element[] { new StringElement("string", "fill: rgb(42, 0, 255)", false),
                 new RegExprElement("ml-comment", "fill: rgb(63, 127, 95)", "/\\*(.|[\\r\\n])*?\\*/"),
                 new RegExprElement("sl-comment", "fill: rgb(63, 127, 95)", "//.*[\\r\\n]"),
                 new RegExprElement("keyword", "fill: rgb(127, 0, 85); font-weight: bold", keywords),
                 new RegExprElement("number", "fill: rgb(125, 125, 125)", "\\b([\\d]+(\\.[\\d]+)?|0x[a-f0-9]+)\\b") };
 
         // TEST
-        final Code2SvgConfig testee = JaxbUtils.unmarshal(xml, Code2SvgConfig.class, RegExprElement.class);
+        final Code2SvgConfig testee = JaxbUtils.unmarshal(xml, (Class<?>[]) Code2SvgUtils.JAXB_CLASSES.toArray());
 
         // VERIFY
         assertThat(testee).isNotNull();

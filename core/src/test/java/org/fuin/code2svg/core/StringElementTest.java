@@ -20,7 +20,7 @@ package org.fuin.code2svg.core;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.custommonkey.xmlunit.XMLAssert;
-import org.fuin.code2svg.core.RegExprElement;
+import org.fuin.code2svg.core.StringElement;
 import org.fuin.utils4j.JaxbUtils;
 import org.junit.Test;
 
@@ -33,16 +33,16 @@ import com.openpojo.validation.test.impl.DefaultValuesNullTester;
 import com.openpojo.validation.test.impl.GetterTester;
 
 /**
- * Tests for {@link RegExprElement}.
+ * Tests for {@link StringElement}.
  */
-public class RegExprElementTest {
+public class StringElementTest {
 
     // CHECKSTYLE:OFF
 
     @Test
     public final void testPojoStructureAndBehavior() {
 
-        final PojoClass pc = PojoClassFactory.getPojoClass(RegExprElement.class);
+        final PojoClass pc = PojoClassFactory.getPojoClass(StringElement.class);
         final ValidatorBuilder pv = ValidatorBuilder.create();
 
         pv.with(new NoPublicFieldsRule());
@@ -59,13 +59,13 @@ public class RegExprElementTest {
     public final void testMarshal() throws Exception {
 
         // PREPARE
-        final RegExprElement testee = new RegExprElement("string", "fill: rgb(42, 0, 255)", "\".*?\"");
+        final StringElement testee = new StringElement("string", "fill: rgb(42, 0, 255)", true);
 
         // TEST
         final String result = JaxbUtils.marshal(testee, (Class<?>[]) Code2SvgUtils.JAXB_CLASSES.toArray());
 
         // VERIFY
-        final String expected = "<reg-expr-element name =\"string\" css=\"fill: rgb(42, 0, 255)\" pattern=\"&quot;.*?&quot;\" />";
+        final String expected = "<string-element name =\"string\" css=\"fill: rgb(42, 0, 255)\" single=\"true\" />";
         XMLAssert.assertXMLEqual(JaxbUtils.XML_PREFIX + expected, result);
 
     }
@@ -74,33 +74,46 @@ public class RegExprElementTest {
     public final void testUnmarshal() throws Exception {
 
         // PREPARE
-        final String xml = "<reg-expr-element name =\"string\" css=\"fill: rgb(42, 0, 255)\" pattern=\"&quot;.*?&quot;\" />";
+        final String xml = "<string-element name =\"string\" css=\"fill: rgb(42, 0, 255)\" />";
 
         // TEST
-        final RegExprElement testee = JaxbUtils.unmarshal(xml, (Class<?>[]) Code2SvgUtils.JAXB_CLASSES.toArray());
+        final StringElement testee = JaxbUtils.unmarshal(xml, (Class<?>[]) Code2SvgUtils.JAXB_CLASSES.toArray());
 
         // VERIFY
         assertThat(testee).isNotNull();
         assertThat(testee.getName()).isEqualTo("string");
         assertThat(testee.getCSS()).isEqualTo("fill: rgb(42, 0, 255)");
-        assertThat(testee.getPattern()).isEqualTo("\".*?\"");
-        assertThat(testee.matcher("123")).isNotNull();
+        assertThat(testee.getPattern()).isEqualTo("&quot;.*?&quot;");
+        assertThat(testee.matcher("whatever")).isNotNull();
 
     }
 
     @Test
-    public final void testCreate() {
+    public final void testCreateDoubleQuotes() {
 
         // TEST
-        final RegExprElement testee = new RegExprElement("string", "fill: rgb(42, 0, 255)", "\".*?\"");
+        final StringElement testee = new StringElement("string", "fill: rgb(42, 0, 255)");
 
         // VERIFY
         assertThat(testee.getName()).isEqualTo("string");
         assertThat(testee.getCSS()).isEqualTo("fill: rgb(42, 0, 255)");
-        assertThat(testee.getPattern()).isEqualTo("\".*?\"");
+        assertThat(testee.getPattern()).isEqualTo("&quot;.*?&quot;");
 
     }
 
+    @Test
+    public final void testCreateSingleQuotes() {
+
+        // TEST
+        final StringElement testee = new StringElement("string", "fill: rgb(42, 0, 255)", true);
+
+        // VERIFY
+        assertThat(testee.getName()).isEqualTo("string");
+        assertThat(testee.getCSS()).isEqualTo("fill: rgb(42, 0, 255)");
+        assertThat(testee.getPattern()).isEqualTo("'.*?'");
+
+    }
+    
     // CHECKSTYLE:ON
 
 }

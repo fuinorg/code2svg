@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <code2svg file-extension=".ddd">
-	<reg-expr-element name="string" css="fill: rgb(42, 0, 255)" pattern="&quot;.*?&quot;" />
 	<reg-expr-element name="ml-comment" css="fill: rgb(63, 127, 95)" pattern="/\*(.|[\r\n])*?\*/" />
 	<reg-expr-element name="sl-comment" css="fill: rgb(63, 127, 95)" pattern="//.*[\r\n]" />
+	<string-element name="string" css="fill: rgb(42, 0, 255)" />
 	<reg-expr-element name="keyword" css="fill: rgb(127, 0, 85); font-weight: bold" pattern="\bacceptable\b|\baggregate\b|\baggregate-id\b|\bautomatic\b|\bbase\b|\bbusiness-rules\b|\bcid\b|\bconsistency\b|\bconstraint\b|\bconstructor\b|\bcontext\b|\bdays\b|\bdeprecated\b|\bdetection\b|\belement\b|\bentity\b|\bentity-id\b|\benum\b|\bevent\b|\bexamples\b|\bexception\b|\bfalse\b|\bfires\b|\bgenerics\b|\bhours\b|\bidentifier\b|\bidentifies\b|\bimport\b|\binput\b|\binstances\b|\binvariants\b|\blabel\b|\bmanually\b|\bmessage\b|\bmethod\b|\bmillis\b|\bminutes\b|\bnamespace\b|\bnever\b|\bnull\b|\bnullable\b|\bpreconditions\b|\bprompt\b|\bref\b|\bresolution\b|\breturns\b|\broot\b|\bseconds\b|\bservice\b|\bslabel\b|\bstrong\b|\btooltip\b|\btrue\b|\btype\b|\bvalue-object\b|\bweak\b|\bworkflow\b" />
 	<reg-expr-element name="number" css="fill: rgb(125, 125, 125)" pattern="\b([\d]+(\.[\d]+)?|0x[a-f0-9]+)\b" />
 </code2svg>
