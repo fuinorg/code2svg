@@ -81,7 +81,7 @@ Used to locate keywords in the source code.
 The project is splitted into three separate modules: The core library, a maven plugin and the standalone application.
 
 - **[Core Library](core)** Java library that can be used within your own programs
-- **[Maven Plugin(maven-plugin)** Maven plugin that allows integrating the converter in your build.
+- **[Maven Plugin](maven-plugin)** Maven plugin that allows integrating the converter in your build.
 - **[Application](app)** Simple Java command line application to run the converter.
 
 ## Limitations
