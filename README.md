@@ -32,24 +32,51 @@ The highlighting is configured using a simple XML file:
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <code2svg file-extension=".ddd">
-	<reg-expr-element name="string" css="fill: rgb(42, 0, 255)" pattern="&quot;.*?&quot;" />
-	<reg-expr-element name="ml-comment" css="fill: rgb(63, 127, 95)" pattern="/\*(.|[\r\n])*?\*/" />
-	<reg-expr-element name="sl-comment" css="fill: rgb(63, 127, 95)" pattern="(?m)//.*$" />
-	<reg-expr-element name="number" css="fill: rgb(125, 125, 125)" pattern="(\b([\d]+(\.[\d]+)?|0x[a-f0-9]+)\b)(?=([^&quot;\\]*(\\.|&quot;([^&quot;\\]*\\.)*[^&quot;\\]*&quot;))*[^&quot;]*$)" />
-	<reg-expr-element name="keyword" css="fill: rgb(127, 0, 85); font-weight: bold">
+	<reg-expr-element name="whatever" css="fill: red" pattern="begin.*end" />
+	<ml-comment-element name="ml-comment" css="fill: rgb(63, 127, 95)" />
+	<sl-comment-element name="sl-comment" css="fill: rgb(63, 127, 95)" />
+	<string-element name="string" css="fill: rgb(42, 0, 255)" single="false" />
+	<number-element name="number" css="fill: rgb(125, 125, 125)" />
+	<keyword-element name="keyword" css="fill: rgb(127, 0, 85); font-weight: bold">
 		<keyword>value-object</keyword>
 		<keyword>base</keyword>
 		<keyword>label</keyword>
 		<keyword>invariants</keyword>
-	</reg-expr-element>
+	</keyword-element>
 </code2svg>
 ```
 - **file-extension** is used for locating the code files inside a directory.
-- The ``<reg-expr-element ... />`` is a regular expression based way to identify the part to be styled in the code file.
 - **name** is a unique identifier that will be used in the SVG markup as a CSS class.
 - **css** is the CSS  for the class that will be used to style the element.
+
+### reg-expr-element
+The ``<reg-expr-element ... />`` is a regular expression based way to identify the part to be styled in the code file.
 - **pattern** is the pattern for locating the code fragments to style.
-- **keyword** is a convenience method to define a pattern for keywords. The regular expression will be built internally.
+
+### ml-comment-element
+Locates multi line comments in the source code: 
+``
+/**
+ * My comment
+ */ 
+`` 
+
+### sl-comment-element
+Locates single line comments in the source code:
+``
+// Whatever
+Integer a
+String b // Comment
+`` 
+
+### string-element
+Locates a string either with single (**single="true"**) or double quotes (**single="false"** or attribute not present).
+
+### number-element
+Used to locate numeric values in the source code.
+
+### keyword-element
+Used to locate keywords in the source code.
 
 ## Modules
 The project is splitted into three separate modules: The core library, a maven plugin and the standalone application.
