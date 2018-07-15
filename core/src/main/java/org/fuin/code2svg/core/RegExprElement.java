@@ -17,8 +17,6 @@
  */
 package org.fuin.code2svg.core;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
@@ -26,7 +24,6 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -42,10 +39,6 @@ public final class RegExprElement extends AbstractElement {
     @Nullable
     @XmlAttribute(name = "pattern")
     private String pattern;
-
-    @Nullable
-    @XmlElement(name = "keyword")
-    private List<String> keywords;
 
     private transient Pattern rePattern;
 
@@ -70,24 +63,6 @@ public final class RegExprElement extends AbstractElement {
         super(name, css);
         this.pattern = regExpr;
         this.rePattern = Pattern.compile(regExpr);
-        this.keywords = null;
-    }
-
-    /**
-     * Constructor with keywords.
-     * 
-     * @param name
-     *            Unique name.
-     * @param css
-     *            Style.
-     * @param keywords
-     *            Lists of keywords to create a regular expression from.
-     */
-    public RegExprElement(final String name, final String css, final List<String> keywords) {
-        super(name, css);
-        this.pattern = null;
-        this.rePattern = Pattern.compile(keywords2expression(keywords));
-        this.keywords = new ArrayList<>(keywords);
     }
 
     /**
@@ -99,49 +74,21 @@ public final class RegExprElement extends AbstractElement {
         return pattern;
     }
 
-    /**
-     * Returns the keywords list.
-     * 
-     * @return List of keywords.
-     */
-    public List<String> getKeywords() {
-        return keywords;
-    }
-
     @Override
     public final ElementMatcher matcher(final String text) {
         return new RegExprMatcher(rePattern.matcher(text));
     }
 
     public void afterUnmarshal(final Unmarshaller unmarshaller, final Object parent) {
-        if ((pattern == null) && (keywords == null)) {
-            throw new IllegalStateException("Either 'pattern' or 'keywords' must be set - Both are null");
-        }
-        if ((pattern != null) && (keywords != null)) {
-            throw new IllegalStateException("Either 'pattern' or 'keywords' must be set - Not both");
-        }
         if (pattern == null) {
-            this.rePattern = Pattern.compile(keywords2expression(keywords));
-        } else {
-            this.rePattern = Pattern.compile(pattern);
+            throw new IllegalStateException("Attribute 'pattern' must be set");
         }
+        this.rePattern = Pattern.compile(pattern);
     }
 
     @Override
     public String toString() {
-        return "RegExprElement [name=" + getName() + ", css=" + getCSS() + ", pattern=" + pattern + ", keywords=" + keywords + "]";
-    }
-
-    private static String keywords2expression(final List<String> keywords) {
-        final String notWithinQuotesExpression = "(?=([^\"\\\\]*(\\\\.|\"([^\"\\\\]*\\\\.)*[^\"\\\\]*\"))*[^\"]*$)";
-        final StringBuilder sb = new StringBuilder();
-        for (final String keyword : keywords) {
-            if (sb.length() > 0) {
-                sb.append("|");
-            }
-            sb.append("(\\b" + keyword + "\\b)" + notWithinQuotesExpression);
-        }
-        return sb.toString();
+        return "RegExprElement [name=" + getName() + ", css=" + getCSS() + ", pattern=" + pattern + "]";
     }
 
 }
