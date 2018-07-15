@@ -51,23 +51,23 @@ The highlighting is configured using a simple XML file:
 
 ### reg-expr-element
 The ``<reg-expr-element ... />`` is a regular expression based way to identify the part to be styled in the code file.
-- **pattern** is the pattern for locating the code fragments to style.
+The **pattern** attribute defines the pattern for locating the code fragments to style.
 
 ### ml-comment-element
 Locates multi line comments in the source code: 
-``
+```
 /**
  * My comment
  */ 
-`` 
+```
 
 ### sl-comment-element
 Locates single line comments in the source code:
-``
+```
 // Whatever
 Integer a
 String b // Comment
-`` 
+```
 
 ### string-element
 Locates a string either with single (**single="true"**) or double quotes (**single="false"** or attribute not present).
