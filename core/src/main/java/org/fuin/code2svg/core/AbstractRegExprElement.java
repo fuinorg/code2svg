@@ -44,8 +44,6 @@ public abstract class AbstractRegExprElement extends AbstractElement {
      *            Unique name.
      * @param css
      *            Style.
-     * @param regExpr
-     *            regular expression.
      */
     public AbstractRegExprElement(final String name, final String css) {
         super(name, css);
