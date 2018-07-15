@@ -159,7 +159,7 @@ public class Code2SvgConfigTest {
         
         final Element[] elements = new Element[] { new StringElement("string", "fill: rgb(42, 0, 255)", false),
                 new RegExprElement("ml-comment", "fill: rgb(63, 127, 95)", "/\\*(.|[\\r\\n])*?\\*/"),
-                new RegExprElement("sl-comment", "fill: rgb(63, 127, 95)", "//.*[\\r\\n]"),
+                new SingleLineCommentElement("sl-comment", "fill: rgb(63, 127, 95)"),
                 new RegExprElement("keyword", "fill: rgb(127, 0, 85); font-weight: bold", keywords),
                 new NumberElement("number", "fill: rgb(125, 125, 125)") };
 
