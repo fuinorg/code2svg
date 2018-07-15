@@ -137,6 +137,9 @@ public final class Code2Svg {
         
         // Escape input
         src = StringEscapeUtils.escapeXml10(src);
+        
+        // Replace strings like "°°9986°°" with XML character entity like "&#9986;"
+        src = replaceUtf8Characters(src);
 
         // Tag elements
         src = tagAll(src, config.getElements());
@@ -222,6 +225,19 @@ public final class Code2Svg {
             list.add(Pattern.compile(Pattern.quote(element.getSvgStartTag()) + ".*" + Pattern.quote(element.getSvgEndTag())));
         }
         return list;
+    }
+    
+    private static String replaceUtf8Characters(final String src) {
+        final Pattern pattern = Pattern.compile("°°\\d+?°°|°°x[0-9A-Fa-f]+?°°");
+        final Matcher m = pattern.matcher(src);
+        final StringBuffer sb = new StringBuffer();
+        while (m.find()) {
+            final String code = src.substring(m.start() + 2, m.end() - 2);
+            m.appendReplacement(sb, "&#" + code + ";");
+        }
+        m.appendTail(sb);
+        return sb.toString();
+        
     }
 
 }
