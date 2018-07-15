@@ -17,10 +17,7 @@
  */
 package org.fuin.code2svg.core;
 
-import java.util.regex.Pattern;
-
 import javax.annotation.Nullable;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -34,13 +31,11 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "reg-expr-element")
-public final class RegExprElement extends AbstractElement {
+public final class RegExprElement extends AbstractRegExprElement {
 
     @Nullable
     @XmlAttribute(name = "pattern")
     private String pattern;
-
-    private transient Pattern rePattern;
 
     /**
      * Package visible default constructor for deserialization.
@@ -62,7 +57,6 @@ public final class RegExprElement extends AbstractElement {
     public RegExprElement(final String name, final String css, final String regExpr) {
         super(name, css);
         this.pattern = regExpr;
-        this.rePattern = Pattern.compile(regExpr);
     }
 
     /**
@@ -72,18 +66,6 @@ public final class RegExprElement extends AbstractElement {
      */
     public final String getPattern() {
         return pattern;
-    }
-
-    @Override
-    public final ElementMatcher matcher(final String text) {
-        return new RegExprMatcher(rePattern.matcher(text));
-    }
-
-    public void afterUnmarshal(final Unmarshaller unmarshaller, final Object parent) {
-        if (pattern == null) {
-            throw new IllegalStateException("Attribute 'pattern' must be set");
-        }
-        this.rePattern = Pattern.compile(pattern);
     }
 
     @Override
