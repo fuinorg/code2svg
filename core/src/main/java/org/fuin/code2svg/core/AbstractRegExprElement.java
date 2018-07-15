@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class AbstractRegExprElement extends AbstractElement {
 
-    private transient Pattern pattern;
+    private transient Pattern compiledPattern;
 
     /**
      * Package visible default constructor for deserialization.
@@ -62,10 +62,10 @@ public abstract class AbstractRegExprElement extends AbstractElement {
      * @return Pattern.
      */
     public final Pattern getCompiledPattern() {
-        if (pattern == null) {
-            pattern = Pattern.compile(getPattern());
+        if (compiledPattern == null) {
+            compiledPattern = Pattern.compile(getPattern());
         }
-        return pattern;
+        return compiledPattern;
     }
 
     /**
