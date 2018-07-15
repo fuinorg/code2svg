@@ -161,7 +161,7 @@ public class Code2SvgConfigTest {
                 new RegExprElement("ml-comment", "fill: rgb(63, 127, 95)", "/\\*(.|[\\r\\n])*?\\*/"),
                 new RegExprElement("sl-comment", "fill: rgb(63, 127, 95)", "//.*[\\r\\n]"),
                 new RegExprElement("keyword", "fill: rgb(127, 0, 85); font-weight: bold", keywords),
-                new RegExprElement("number", "fill: rgb(125, 125, 125)", "\\b([\\d]+(\\.[\\d]+)?|0x[a-f0-9]+)\\b") };
+                new NumberElement("number", "fill: rgb(125, 125, 125)") };
 
         // TEST
         final Code2SvgConfig testee = JaxbUtils.unmarshal(xml, (Class<?>[]) Code2SvgUtils.JAXB_CLASSES.toArray());
