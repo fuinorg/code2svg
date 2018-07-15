@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -38,15 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "reg-expr-element")
-public final class RegExprElement implements Element {
-
-    @NotNull
-    @XmlAttribute(name = "name")
-    private String name;
-
-    @NotNull
-    @XmlAttribute(name = "css")
-    private String css;
+public final class RegExprElement extends AbstractElement {
 
     @Nullable
     @XmlAttribute(name = "pattern")
@@ -76,9 +67,7 @@ public final class RegExprElement implements Element {
      *            regular expression.
      */
     public RegExprElement(final String name, final String css, final String regExpr) {
-        super();
-        this.name = name;
-        this.css = css;
+        super(name, css);
         this.pattern = regExpr;
         this.rePattern = Pattern.compile(regExpr);
         this.keywords = null;
@@ -95,22 +84,10 @@ public final class RegExprElement implements Element {
      *            Lists of keywords to create a regular expression from.
      */
     public RegExprElement(final String name, final String css, final List<String> keywords) {
-        super();
-        this.name = name;
-        this.css = css;
+        super(name, css);
         this.pattern = null;
         this.rePattern = Pattern.compile(keywords2expression(keywords));
         this.keywords = new ArrayList<>(keywords);
-    }
-
-    @Override
-    public final String getName() {
-        return name;
-    }
-
-    @Override
-    public final String getCSS() {
-        return css;
     }
 
     /**
@@ -136,16 +113,6 @@ public final class RegExprElement implements Element {
         return new RegExprMatcher(rePattern.matcher(text));
     }
 
-    @Override
-    public final String getSvgStartTag() {
-        return "<tspan class=\"" + name + "\">";
-    }
-
-    @Override
-    public final String getSvgEndTag() {
-        return "</tspan>";
-    }
-
     public void afterUnmarshal(final Unmarshaller unmarshaller, final Object parent) {
         if ((pattern == null) && (keywords == null)) {
             throw new IllegalStateException("Either 'pattern' or 'keywords' must be set - Both are null");
@@ -161,38 +128,8 @@ public final class RegExprElement implements Element {
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        RegExprElement other = (RegExprElement) obj;
-        if (name == null) {
-            if (other.name != null) {
-                return false;
-            }
-        } else if (!name.equals(other.name)) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
     public String toString() {
-        return "RegExprElement [name=" + name + ", css=" + css + ", pattern=" + pattern + ", keywords=" + keywords + "]";
+        return "RegExprElement [name=" + getName() + ", css=" + getCSS() + ", pattern=" + pattern + ", keywords=" + keywords + "]";
     }
 
     private static String keywords2expression(final List<String> keywords) {
