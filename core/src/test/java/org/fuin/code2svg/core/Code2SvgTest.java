@@ -70,7 +70,7 @@ public class Code2SvgTest {
 
         // VERIFY
         assertThat(result).isEqualTo(
-                "<tspan dy=\"1.2em\" x=\"10\"> </tspan>     <tspan class=\"keyword\">slabel</tspan> <tspan class=\"string\">\"ALPHA3CC\"</tspan> <tspan class=\"sl-comment\">// Whatever slabel 123</tspan>");
+                "<tspan dy=\"1.2em\" x=\"10\"> </tspan>     <tspan class=\"keyword\">slabel</tspan> <tspan class=\"string\">&quot;ALPHA3CC&quot;</tspan> <tspan class=\"sl-comment\">// Whatever slabel 123</tspan>");
 
     }
 

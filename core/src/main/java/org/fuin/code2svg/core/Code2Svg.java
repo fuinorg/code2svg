@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.fuin.utils4j.Utils4J;
 import org.fuin.utils4j.fileprocessor.FileHandler;
 import org.fuin.utils4j.fileprocessor.FileHandlerResult;
@@ -129,12 +130,22 @@ public final class Code2Svg {
      * @return Converted text.
      */
     public String convert(final Code2SvgConfig config, final String model) {
+        
+        // Parse and remove inline configuration
         final Matcher matcher = ModelConfigParser.PATTERN.matcher(model);
         String src = matcher.replaceAll("");
+        
+        // Escape input
+        src = StringEscapeUtils.escapeXml10(src);
+
+        // Tag elements
         src = tagAll(src, config.getElements());
+        
+        // Add line start markup
         final String lineStart = "<tspan dy=\"1.2em\" x=\"10\"> </tspan>";
         src = lineStart + src.replace(LINE_SEPARATOR, LINE_SEPARATOR + lineStart);
         src = src.replace("\t", "    ");
+        
         return src;
     }
 
