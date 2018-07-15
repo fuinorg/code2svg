@@ -50,7 +50,7 @@ The highlighting is configured using a simple XML file:
 - **css** is the CSS  for the class that will be used to style the element.
 
 ### reg-expr-element
-The ``<reg-expr-element ... />`` is a regular expression based way to identify the part to be styled in the code file.
+Uses a regular expression to identify the part to be styled in the source code.
 The **pattern** attribute defines the pattern for locating the code fragments to style.
 
 ### ml-comment-element
