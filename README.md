@@ -25,7 +25,6 @@ Example output:
 <table><tr><td><img src="https://cdn.rawgit.com/fuinorg/code2svg/cc1d9c65/example.ddd.svg" width="880" height="200"></td></tr></table>
 (Caution: Image might be broken in Internet Explorer and Edge - Try Firefox or Chromium)
 
-
 ## Configuration
 
 The highlighting is configured using a simple XML file:
@@ -81,19 +80,14 @@ Used to locate keywords in the source code.
 ## Modules
 The project is splitted into three separate modules: The core library, a maven plugin and the standalone application.
 
-### Core Library
-Java library that can be used within your own programs: [core](core)
-
-### Maven Plugin
-Maven plugin that allows integrating the converter in your build: [maven-plugin](maven-plugin)
-
-### Application
-Simple Java command line application to run the converter: [app](app)
+- **[Core Library](core)** Java library that can be used within your own programs
+- **[Maven Plugin(maven-plugin)** Maven plugin that allows integrating the converter in your build.
+- **[Application](app)** Simple Java command line application to run the converter.
 
 ## Limitations
-Currently there is nothing implemented to prevent elements from 'overlapping' each other. 
-This means the final SVG image might not exactly be what you want (See [Issue 1](https://github.com/fuinorg/code2svg/issues/1)).
-In most cases this is not really a problem, and it can be minimized by creating the right regular expressions.
+The order of the tags in the XML configuration determine the order of tagging the source code fragments.
+Elements that locate large blocks of text like comments should be evaluated first to avoid finding other elements in that area.
+Example: Keywords, strings or numbers that are within a comment.  
 
 Snapshots
 =========
