@@ -61,17 +61,24 @@ public final class Code2Svg {
     }
 
     private String tag(final List<PieceOfText> replacementst, final String source, final Element el) {
-        final ElementMatcher m = el.matcher(source);
-        final StringBuffer sb = new StringBuffer();
-        while (m.find()) {
-            if (!anyOverlaps(replacementst, m.start(), m.end())) {
-                String found = source.substring(m.start(), m.end());
-                found = found.replace(LINE_SEPARATOR, el.getSvgEndTag() + LINE_SEPARATOR + el.getSvgStartTag());
-                m.appendReplacement(sb, el.getSvgStartTag() + found + el.getSvgEndTag());
+        LOG.info("Tagging: {}", el.getName());
+        try {
+            final ElementMatcher m = el.matcher(source);
+            final StringBuffer sb = new StringBuffer();
+            while (m.find()) {
+                if (!anyOverlaps(replacementst, m.start(), m.end())) {
+                    String found = source.substring(m.start(), m.end());
+                    found = found.replace("$", "\\$"); // Avoid "No group with name" exception
+                    found = found.replace(LINE_SEPARATOR, el.getSvgEndTag() + LINE_SEPARATOR + el.getSvgStartTag());
+                    m.appendReplacement(sb, el.getSvgStartTag() + found + el.getSvgEndTag());
+                }
             }
+            m.appendTail(sb);
+            return sb.toString();
+        } catch (final RuntimeException ex) {
+            LOG.error("Failed finding '{}' elements, source='{}'", el.getName(), source);
+            throw ex;
         }
-        m.appendTail(sb);
-        return sb.toString();
     }
 
     private void writeToFile(final File file, final String src, final String title, final String description,
