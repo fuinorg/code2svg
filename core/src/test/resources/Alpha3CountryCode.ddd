@@ -11,7 +11,7 @@ context iso3166 {
 		 */
 		value-object Alpha3CountryCode base String {
 			
-			slabel "ALPHA3CC" // Whatever
+			slabel "ALPHA3CC" // Whatever °°x2777°°
 			label "Alpha-3 country code"
 			tooltip "ISO 3166-1 alpha-3 three-letter country code defined in ISO 3166-1"
 			prompt "XXX"
