@@ -157,8 +157,9 @@ public class Code2SvgConfigTest {
         keywords.add("weak");
         keywords.add("workflow");
         
-        final Element[] elements = new Element[] { new StringElement("string", "fill: rgb(42, 0, 255)", false),
-                new RegExprElement("ml-comment", "fill: rgb(63, 127, 95)", "/\\*(.|[\\r\\n])*?\\*/"),
+        final Element[] elements = new Element[] { new RegExprElement("whatever", "fill: red", "begin.*end"), 
+                new StringElement("string", "fill: rgb(42, 0, 255)", false),
+                new MultiLineCommentElement("ml-comment", "fill: rgb(63, 127, 95)"),
                 new SingleLineCommentElement("sl-comment", "fill: rgb(63, 127, 95)"),
                 new RegExprElement("keyword", "fill: rgb(127, 0, 85); font-weight: bold", keywords),
                 new NumberElement("number", "fill: rgb(125, 125, 125)") };

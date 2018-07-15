@@ -6,6 +6,7 @@
 <style>
 <![CDATA[
 text { font-size: 11pt; font-family: monospace }
+.whatever { fill: red }
 .ml-comment { fill: rgb(63, 127, 95) }
 .sl-comment { fill: rgb(63, 127, 95) }
 .string { fill: rgb(42, 0, 255) }
