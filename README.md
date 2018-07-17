@@ -6,6 +6,13 @@ A minimalistic converter that transforms code into SVG text with syntax highligh
 [![LGPLv3 License](http://img.shields.io/badge/license-LGPLv3-blue.svg)](https://www.gnu.org/licenses/lgpl.html)
 [![Java Development Kit 1.8](https://img.shields.io/badge/JDK-1.8-green.svg)](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 
+## Modules
+The project is splitted into three separate modules: The core library, a maven plugin and the standalone application.
+
+- **[Core Library](core)** Java library that can be used within your own programs
+- **[Maven Plugin](maven-plugin)** Maven plugin that allows integrating the converter in your build.
+- **[Application](app)** Simple Java command line application to run the converter.
+
 ## Overview
 Example input from [DDD DSL language](https://github.com/fuinorg/org.fuin.dsl.ddd):
 ```
@@ -87,13 +94,6 @@ You can overwrite the default width and height from the XML configuration adding
 Sometimes it's handy to insert some [XML character entities](https://www.w3schools.com/charsets/ref_utf_dingbats.asp) in the source code.
 
 Example: ``&#x277A;`` can be added as ``°°x277A°°`` in the source and will be rendered as &#x277A;
-
-## Modules
-The project is splitted into three separate modules: The core library, a maven plugin and the standalone application.
-
-- **[Core Library](core)** Java library that can be used within your own programs
-- **[Maven Plugin](maven-plugin)** Maven plugin that allows integrating the converter in your build.
-- **[Application](app)** Simple Java command line application to run the converter.
 
 ## Limitations
 The order of the tags in the XML configuration determines the order in which source code fragments are replaced.
