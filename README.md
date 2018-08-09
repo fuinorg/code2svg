@@ -1,7 +1,7 @@
 # code2svg
 A minimalistic converter that transforms code into SVG text with syntax highlighting.
 
-[![Build Status](https://fuin-org.ci.cloudbees.com/job/code2svg/badge/icon)](https://fuin-org.ci.cloudbees.com/job/code2svg/)
+[![Build Status](https://jenkins.fuin.org/job/code2svg/badge/icon)](https://jenkins.fuin.org/job/code2svg/)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.fuin/code2svg/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.fuin/code2svg/)
 [![LGPLv3 License](http://img.shields.io/badge/license-LGPLv3-blue.svg)](https://www.gnu.org/licenses/lgpl.html)
 [![Java Development Kit 1.8](https://img.shields.io/badge/JDK-1.8-green.svg)](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
