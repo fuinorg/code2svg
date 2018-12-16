@@ -27,8 +27,9 @@ import java.util.List;
 public final class Code2SvgUtils {
 
     /** Classes used for JAX-B serialization. */
-    public static final List<Class<?>> JAXB_CLASSES = Collections.unmodifiableList(Arrays.asList(Code2SvgConfig.class, RegExprElement.class,
-            StringElement.class, NumberElement.class, SingleLineCommentElement.class, MultiLineCommentElement.class, KeywordElement.class));
+    public static final List<Class<?>> JAXB_CLASSES = Collections
+            .unmodifiableList(Arrays.asList(Code2SvgConfig.class, FileConfig.class, RegExprElement.class, StringElement.class,
+                    NumberElement.class, SingleLineCommentElement.class, MultiLineCommentElement.class, KeywordElement.class));
 
     private Code2SvgUtils() {
         throw new UnsupportedOperationException();

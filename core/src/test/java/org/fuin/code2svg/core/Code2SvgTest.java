@@ -56,6 +56,27 @@ public class Code2SvgTest {
     }
 
     @Test
+    public void testConvertFile2() throws IOException {
+
+        // PREPARE
+        final File configFile = copy("/code-2-svg-2.xml", "code-2-svg.xml");
+        final File sourceFile = copy("/Alpha3CountryCode2.ddd", "Alpha3CountryCode.ddd");
+        final File actualTargetFile = new File(sourceFile.getParentFile(), sourceFile.getName() + ".svg");
+        final File expectedTargetFile = copy("/Alpha3CountryCode2.ddd.svg", "Alpha3CountryCode-expected.ddd.svg");
+        final String configXml = Utils4J.readAsString(url(configFile), "utf-8", 1024);
+        final Code2SvgConfig config = JaxbUtils.unmarshal(configXml, (Class<?>[]) Code2SvgUtils.JAXB_CLASSES.toArray());
+
+        final Code2Svg testee = new Code2Svg();
+
+        // TEST
+        testee.convertFile(config, sourceFile);
+
+        // VERIFY
+        assertThat(actualTargetFile).hasSameContentAs(expectedTargetFile);
+
+    }
+
+    @Test
     public void testConvert() throws IOException {
 
         // PREPARE

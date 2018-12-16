@@ -19,6 +19,7 @@ package org.fuin.code2svg.core;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,13 +65,15 @@ public class Code2SvgConfigTest {
 
         // PREPARE
         final RegExprElement el = new RegExprElement("string", "fill: rgb(42, 0, 255)", "\".*?\"");
-        final Code2SvgConfig testee = new Code2SvgConfig.Builder().fileExtension(".ddd").addElement(el).build();
+        final Code2SvgConfig testee = new Code2SvgConfig.Builder().fileExtension(".ddd")
+                .addFileConfig(new FileConfig("abc\\.ddd", 800, 600))
+                .addElement(el).build();
 
         // TEST
         final String result = JaxbUtils.marshal(testee, (Class<?>[]) Code2SvgUtils.JAXB_CLASSES.toArray());
 
         // VERIFY
-        final String expected = "<code2svg file-extension=\".ddd\" text-css=\"font-size: 11pt; font-family: monospace\"><reg-expr-element name =\"string\" css=\"fill: rgb(42, 0, 255)\" pattern=\"&quot;.*?&quot;\" /></code2svg>";
+        final String expected = "<code2svg file-extension=\".ddd\" text-css=\"font-size: 11pt; font-family: monospace\"><file-configs><file-config name=\"abc\\.ddd\" width=\"800\" height=\"600\"/></file-configs><reg-expr-element name =\"string\" css=\"fill: rgb(42, 0, 255)\" pattern=\"&quot;.*?&quot;\" /></code2svg>";
         XMLAssert.assertXMLEqual(JaxbUtils.XML_PREFIX + expected, result);
 
     }
@@ -171,6 +174,29 @@ public class Code2SvgConfigTest {
         assertThat(testee.getElements()).containsOnly(elements);
 
     }
+    
+    @Test
+    public void testFindFor() {
+        
+        // PREPARE
+        final FileConfig fileConfig1 = new FileConfig(".*/abc\\.ddd", 800, 600);
+        final FileConfig fileConfig2 = new FileConfig("/tmp/def\\.ddd", 500, 400);
+        
+        final RegExprElement el = new RegExprElement("string", "fill: rgb(42, 0, 255)", "\".*?\"");
+        final Code2SvgConfig testee = new Code2SvgConfig.Builder().fileExtension(".ddd")
+                .addFileConfig(fileConfig1)
+                .addFileConfig(fileConfig2)
+                .addElement(el).build();
+
+        // TEST & VERIFY
+        assertThat(testee.findFor(new File("/tmp/abc.ddd"))).isSameAs(fileConfig1);
+        assertThat(testee.findFor(new File("/abc/def/abc.ddd"))).isSameAs(fileConfig1);
+        assertThat(testee.findFor(new File("/foo/bar/def.ddd"))).isNull();
+        assertThat(testee.findFor(new File("/tmp/def.ddd"))).isSameAs(fileConfig2);
+       
+    }
+    
+    
 
     // CHECKSTYLE:ON
 

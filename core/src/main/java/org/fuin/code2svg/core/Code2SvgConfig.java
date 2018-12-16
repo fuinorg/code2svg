@@ -17,9 +17,11 @@
  */
 package org.fuin.code2svg.core;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
 
 import javax.annotation.Nullable;
 import javax.validation.Valid;
@@ -30,6 +32,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -37,7 +41,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Code2SvgConfig {
 
     private static final String DEFAULT_TEXT_CSS = "font-size: 11pt; font-family: monospace";
-    
+
     @Nullable
     @XmlAttribute(name = "file-extension")
     private String fileExtension;
@@ -53,7 +57,12 @@ public class Code2SvgConfig {
     @NotNull
     @XmlAttribute(name = "text-css")
     private String textCss;
-    
+
+    @Nullable
+    @XmlElementWrapper(name = "file-configs")
+    @XmlElement(name = "file-config")
+    private List<FileConfig> fileConfigs;
+
     @NotEmpty
     @Valid
     @XmlAnyElement(lax = true)
@@ -95,7 +104,7 @@ public class Code2SvgConfig {
     public final Integer getHeight() {
         return height;
     }
-    
+
     /**
      * Returns the CSS for the text.
      * 
@@ -104,6 +113,52 @@ public class Code2SvgConfig {
     @NotNull
     public final String getTextCss() {
         return textCss;
+    }
+
+    /**
+     * Returns a list of all file configurations.
+     * 
+     * @return Immutable list or <code>null</code>.
+     */
+    @NotNull
+    public final List<FileConfig> getFileConfigs() {
+        if (fileConfigs == null) {
+            return Collections.emptyList();
+        }
+        return Collections.unmodifiableList(fileConfigs);
+    }
+
+    /**
+     * Adds a file configuration. Creates the internal list of elements if it is not set yet.
+     * 
+     * @param fileConfig
+     *            File configuration to add.
+     */
+    public final void addFileConfig(final FileConfig fileConfig) {
+        if (fileConfigs == null) {
+            fileConfigs = new ArrayList<>();
+        }
+        fileConfigs.add(fileConfig);
+    }
+
+    /**
+     * Returns the file configuration to use for a given file.
+     * 
+     * @param file
+     *            File to find a configuration for.
+     * 
+     * @return File configuration or <code>null</code> if no matching was found.
+     */
+    @Nullable
+    public final FileConfig findFor(final File file) {
+        final List<FileConfig> list = getFileConfigs();
+        for (final FileConfig config : list) {
+            final Matcher matcher = config.getCompiledName().matcher(file.getAbsolutePath());
+            if (matcher.matches()) {
+                return config;
+            }
+        }
+        return null;
     }
 
     /**
@@ -134,7 +189,7 @@ public class Code2SvgConfig {
             textCss = DEFAULT_TEXT_CSS;
         }
     }
-    
+
     @Override
     public final String toString() {
         return "Code2SvgConfig [fileExtension=" + fileExtension + ", width=" + width + ", height=" + height + ", elements=" + elements
@@ -169,6 +224,9 @@ public class Code2SvgConfig {
             config.width = other.width;
             config.fileExtension = other.fileExtension;
             config.textCss = other.textCss;
+            if (other.fileConfigs != null) {
+                config.fileConfigs = new ArrayList<>(other.fileConfigs);
+            }
             config.elements = new ArrayList<>(other.elements);
             return this;
         }
@@ -211,16 +269,43 @@ public class Code2SvgConfig {
             config.height = height;
             return this;
         }
-        
+
         /**
          * Sets the text CSS.
          * 
-         * @param textCss CSS to use for text like "font-size: 12pt; font-family: monospace"
+         * @param textCss
+         *            CSS to use for text like "font-size: 12pt; font-family: monospace"
          * 
          * @return Builder
          */
         public final Builder textCss(@Nullable final String textCss) {
             config.textCss = textCss;
+            return this;
+        }
+
+        /**
+         * Sets the file configurations.
+         * 
+         * @param fileConfigs
+         *            File configurations.
+         * 
+         * @return Builder.
+         */
+        public final Builder fileConfigs(@NotNull final List<FileConfig> fileConfigs) {
+            config.fileConfigs = new ArrayList<>(fileConfigs);
+            return this;
+        }
+
+        /**
+         * Adds an file configuration.
+         * 
+         * @param fileConfig
+         *            File configuration to add.
+         * 
+         * @return Builder.
+         */
+        public final Builder addFileConfig(@NotNull final FileConfig fileConfig) {
+            config.addFileConfig(fileConfig);
             return this;
         }
 
@@ -247,6 +332,23 @@ public class Code2SvgConfig {
          */
         public final Builder addElement(@NotNull final Element element) {
             config.addElement(element);
+            return this;
+        }
+
+        /**
+         * Applies a file configuration.
+         * 
+         * @param fileConfig Configuration to use the file values (like 'width', 'height') from.
+         */
+        public final Builder applyConfig(@Nullable final FileConfig fileConfig) {
+            if (fileConfig != null) {
+                if (fileConfig.getWidth() != null) {
+                    width(fileConfig.getWidth());
+                }
+                if (fileConfig.getHeight() != null) {
+                    height(fileConfig.getHeight());
+                }
+            }
             return this;
         }
 

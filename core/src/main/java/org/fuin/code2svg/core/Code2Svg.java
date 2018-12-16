@@ -173,7 +173,7 @@ public final class Code2Svg {
 
         final File targetFile = new File(srcFile.getParentFile(), srcFile.getName() + ".svg");
         final String model = Utils4J.readAsString(url(srcFile), "utf-8", 1024);
-        final Code2SvgConfig cfg = new ModelConfigParser(config).parse(model);
+        final Code2SvgConfig cfg = new ModelConfigParser(config).parse(srcFile, model);
 
         String src = convert(cfg, model);
         String title = srcFile.getName();

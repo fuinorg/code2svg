@@ -17,10 +17,12 @@
  */
 package org.fuin.code2svg.core;
 
+import java.io.File;
 import java.io.StringReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nullable;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
@@ -35,9 +37,9 @@ import org.fuin.utils4j.Utils4J;
 public final class ModelConfigParser {
 
     static final String CODE2SVG_KEY = "@code2svg:";
-    
+
     static final Pattern PATTERN = Pattern.compile(Pattern.quote(CODE2SVG_KEY) + "\\{.*?\\}");
-    
+
     private final Code2SvgConfig config;
 
     /**
@@ -55,27 +57,29 @@ public final class ModelConfigParser {
     /**
      * Parses the model and returns a configuration updated with values from the JSON,
      * 
+     * @param file
+     *            File the model was read from or <code>null</code> if the source was no file.
      * @param model
      *            Model to parse for {@link #CODE2SVG_KEY} followed by a valid JSON object.
      * 
      * @return Updated configuration.
      */
-    public final Code2SvgConfig parse(final String model) {
-        final String json = extractJson(model);
-        if (json == null) {
-            return config;
-        }
+    public final Code2SvgConfig parse(@Nullable final File file, @NotNull final String model) {
         final Code2SvgConfig.Builder builder = new Code2SvgConfig.Builder();
         builder.copy(config);
-        final JsonObject jsonObj = parseJson(json);
-        if (jsonObj.containsKey("width")) {
-            builder.width(jsonObj.getInt("width"));
-        }
-        if (jsonObj.containsKey("height")) {
-            builder.height(jsonObj.getInt("height"));
-        }
-        if (jsonObj.containsKey("text-css")) {
-            builder.textCss(jsonObj.getString("text-css"));
+        builder.applyConfig(config.findFor(file));
+        final String json = extractJson(model);
+        if (json != null) {
+            final JsonObject jsonObj = parseJson(json);
+            if (jsonObj.containsKey("width")) {
+                builder.width(jsonObj.getInt("width"));
+            }
+            if (jsonObj.containsKey("height")) {
+                builder.height(jsonObj.getInt("height"));
+            }
+            if (jsonObj.containsKey("text-css")) {
+                builder.textCss(jsonObj.getString("text-css"));
+            }
         }
         return builder.build();
     }
@@ -88,7 +92,7 @@ public final class ModelConfigParser {
         }
         return null;
     }
-    
+
     static JsonObject parseJson(final String json) {
         final JsonReader reader = Json.createReaderFactory(null).createReader(new StringReader(json));
         try {

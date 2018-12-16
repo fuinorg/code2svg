@@ -39,6 +39,9 @@ The highlighting is configured using a simple XML file:
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <code2svg file-extension=".ddd" width="800" height="800">
+    <file-configs>
+        <file-config name=".*/Alpha3CountryCode\.ddd" width="800" height="600"/>
+    </file-configs>
 	<reg-expr-element name="whatever" css="fill: red" pattern="begin.*end" />
 	<ml-comment-element name="ml-comment" css="fill: rgb(63, 127, 95)" />
 	<sl-comment-element name="sl-comment" css="fill: rgb(63, 127, 95)" />
@@ -57,6 +60,8 @@ The highlighting is configured using a simple XML file:
 - **height** defines the default height used for all generated SVG images. You can overwrite it by setting a width/height per file (See below).
 - **name** is a unique identifier that will be used in the SVG markup as a CSS class.
 - **css** is the CSS  for the class that will be used to style the element.
+- **file-configs** optional list of file configurations
+- **file-config** if the name of the source model file matches the **name** regular expression, the given **width** and **height** are applied to the target SVG. This is an alternative to using the tag ```@code2svg:{"width":800, "height": 300}``` directly inside the model file.
 
 ### reg-expr-element
 Uses a regular expression to identify the part to be styled in the source code.
