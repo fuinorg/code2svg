@@ -18,6 +18,8 @@ Add the following plugin to your Maven pom.xml:
     <configuration>
         <!-- Path and name of the configuration file. Defaults to 'code-2-svg.xml' in the current directory -->
         <config-file>src/test/resources/code-2-svg.xml</config-file>
+        <!-- Path and name of the target directory for the generated SVG files. Defaults to 'src/main/resources' -->
+        <target-dir>target/svg</target-dir>
         <!-- List of files or directories to convert. Defaults to 'src/main/resources' -->
         <source-files-dirs>
             <argument>src/test/resources</argument>

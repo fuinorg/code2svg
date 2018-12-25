@@ -110,6 +110,9 @@ public final class Code2SvgMojo extends AbstractMojo {
         if (config == null) {
             config = "code2svg.xml";
         }
+        if (targetDir == null) {
+            targetDir = "src/main/resources";
+        }
         if (sourceFilesDirs == null || sourceFilesDirs.length == 0) {
             sourceFilesDirs = new String[] { "src/main/resources" };
         }
