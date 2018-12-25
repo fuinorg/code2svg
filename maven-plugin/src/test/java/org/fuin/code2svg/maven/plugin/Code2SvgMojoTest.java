@@ -26,8 +26,6 @@ import java.net.URL;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.codehaus.plexus.util.FileUtils;
 import org.fuin.code2svg.core.Code2Svg;
-import org.fuin.code2svg.maven.plugin.Code2SvgMojo;
-import org.fuin.utils4j.Utils4J;
 import org.junit.Test;
 
 /**
@@ -41,13 +39,15 @@ public class Code2SvgMojoTest {
     public void testExecute() throws MojoExecutionException, IOException {
 
         // PREPARE
-        final File configFile = copy("/code-2-svg.xml", this.getClass().getSimpleName() + "-code-2-svg.xml");        
-        final File sourceFile = copy("/Alpha3CountryCode.ddd", this.getClass().getSimpleName() + "-Alpha3CountryCode.ddd");        
-        final File targetFile = new File(sourceFile.getParentFile(), sourceFile.getName() + ".svg");
+        final File configFile = copy("/code-2-svg.xml", this.getClass().getSimpleName() + "-code-2-svg.xml");
+        final File sourceFile = copy("/Alpha3CountryCode.ddd", this.getClass().getSimpleName() + "-Alpha3CountryCode.ddd");
+        final File targetDir = sourceFile.getParentFile();
+        final File targetFile = new File(targetDir, sourceFile.getName() + ".svg");
 
         final Code2SvgMojo testee = new Code2SvgMojo();
         testee.setConfigFile(configFile.toString());
-        testee.setSourceFilesDirs(new String[] { sourceFile.toString() });        
+        testee.setTargetDir(targetDir.toString());
+        testee.setSourceFilesDirs(new String[] { sourceFile.toString() });
 
         // TEST
         testee.execute();
@@ -57,16 +57,16 @@ public class Code2SvgMojoTest {
         assertThat(targetFile.length()).isGreaterThan(0);
 
     }
-    
+
     private static File copy(final String fromResource, final String toFile) {
-	try {
-        final URL url = Code2Svg.class.getResource(fromResource);
-        final File file = File.createTempFile(toFile.toString(), ".tmp");        
-        FileUtils.copyURLToFile(url, file);
-        return file;
-	} catch (final IOException ex) {
-	    throw new RuntimeException("Error copying resource '" + fromResource + "' to file '" + toFile + "'", ex);
-	}
+        try {
+            final URL url = Code2Svg.class.getResource(fromResource);
+            final File file = File.createTempFile(toFile.toString(), ".tmp");
+            FileUtils.copyURLToFile(url, file);
+            return file;
+        } catch (final IOException ex) {
+            throw new RuntimeException("Error copying resource '" + fromResource + "' to file '" + toFile + "'", ex);
+        }
     }
 
     // CHECKSTYLE:ON

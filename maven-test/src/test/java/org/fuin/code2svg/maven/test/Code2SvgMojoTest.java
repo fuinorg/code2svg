@@ -28,9 +28,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Test for {@link EventStoreMojo}.
+ * Test for {@link Code2SvgMojo}.
  */
-public class EventStoreMojosTest {
+public class Code2SvgMojoTest {
 
     // CHECKSTYLE:OFF Test
 

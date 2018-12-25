@@ -98,7 +98,7 @@ public class Code2SvgConfigTest {
     public final void testUnmarshalMultipleElements() throws Exception {
 
         // PREPARE
-        final URL url = Code2Svg.class.getResource("/code-2-svg.xml");
+        final URL url = Code2Svg.class.getResource("/code2svg.xml");
         final String xml = Utils4J.readAsString(url, "utf-8", 1024);
 
         final List<String> keywords = new ArrayList<>();

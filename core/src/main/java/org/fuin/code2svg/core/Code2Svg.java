@@ -81,11 +81,10 @@ public final class Code2Svg {
         }
     }
 
-    private void writeToFile(final File file, final String src, final String title, final String description,
-            final Code2SvgConfig config) {
+    private void writeToFile(final File file, final String src, final String title, final String description, final Code2SvgConfig config) {
 
         final List<Element> elements = config.getElements();
-        
+
         try (final Writer writer = new BufferedWriter(new FileWriter(file))) {
 
             writer.write(XML_PREFIX + LINE_SEPARATOR);
@@ -137,25 +136,25 @@ public final class Code2Svg {
      * @return Converted text.
      */
     public String convert(final Code2SvgConfig config, final String model) {
-        
+
         // Parse and remove inline configuration
         final Matcher matcher = ModelConfigParser.PATTERN.matcher(model);
         String src = matcher.replaceAll("");
-        
+
         // Escape input
         src = StringEscapeUtils.escapeXml10(src);
-        
+
         // Replace strings like "°°9986°°" with XML character entity like "&#9986;"
         src = replaceUtf8Characters(src);
 
         // Tag elements
         src = tagAll(src, config.getElements());
-        
+
         // Add line start markup
         final String lineStart = "<tspan dy=\"1.2em\" x=\"10\"> </tspan>";
         src = lineStart + src.replace(LINE_SEPARATOR, LINE_SEPARATOR + lineStart);
         src = src.replace("\t", "    ");
-        
+
         return src;
     }
 
@@ -164,14 +163,23 @@ public final class Code2Svg {
      * 
      * @param config
      *            Configuration to use.
+     * @param srcDir
+     *            Root directory of the source files. Used to build the relative path of the target SVG file.
      * @param srcFile
      *            File to convert.
+     * @param targetDir
+     *            Target directory the relative path and SVG file is created inside.
      */
-    public void convertFile(final Code2SvgConfig config, final File srcFile) {
+    public void convertFile(final Code2SvgConfig config, final File srcDir, final File srcFile, final File targetDir) {
 
         LOG.info("READ {}", srcFile);
 
-        final File targetFile = new File(srcFile.getParentFile(), srcFile.getName() + ".svg");
+        final String path = Utils4J.getRelativePath(srcDir, srcFile.getParentFile());
+        final File dir = new File(targetDir, path);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        final File targetFile = new File(dir, srcFile.getName() + ".svg");
         final String model = Utils4J.readAsString(url(srcFile), "utf-8", 1024);
         final Code2SvgConfig cfg = new ModelConfigParser(config).parse(srcFile, model);
 
@@ -185,12 +193,22 @@ public final class Code2Svg {
 
     }
 
-    public void convertDir(final Code2SvgConfig config, final File srcDir) {
+    /**
+     * Convert all files in a directory.
+     * 
+     * @param config
+     *            Configuration to use.
+     * @param srcDir
+     *            Directory with source files.
+     * @param targetDir
+     *            Target directory.
+     */
+    public void convertDir(final Code2SvgConfig config, final File srcDir, final File targetDir) {
         new FileProcessor(new FileHandler() {
             @Override
             public FileHandlerResult handleFile(final File file) {
                 if (file.getName().endsWith(config.getFileExtension())) {
-                    convertFile(config, file);
+                    convertFile(config, srcDir, file, targetDir);
                 }
                 return FileHandlerResult.CONTINUE;
             }
@@ -233,7 +251,7 @@ public final class Code2Svg {
         }
         return list;
     }
-    
+
     private static String replaceUtf8Characters(final String src) {
         final Pattern pattern = Pattern.compile("°°\\d+?°°|°°x[0-9A-Fa-f]+?°°");
         final Matcher m = pattern.matcher(src);
@@ -244,7 +262,7 @@ public final class Code2Svg {
         }
         m.appendTail(sb);
         return sb.toString();
-        
+
     }
 
 }

@@ -38,7 +38,7 @@ public class Code2SvgTest {
     public void testConvertFile() throws IOException {
 
         // PREPARE
-        final File configFile = copy("/code-2-svg.xml", "code-2-svg.xml");
+        final File configFile = copy("/code2svg.xml", "code2svg.xml");
         final File sourceFile = copy("/Alpha3CountryCode.ddd", "Alpha3CountryCode.ddd");
         final File actualTargetFile = new File(sourceFile.getParentFile(), sourceFile.getName() + ".svg");
         final File expectedTargetFile = copy("/Alpha3CountryCode.ddd.svg", "Alpha3CountryCode-expected.ddd.svg");
@@ -48,7 +48,7 @@ public class Code2SvgTest {
         final Code2Svg testee = new Code2Svg();
 
         // TEST
-        testee.convertFile(config, sourceFile);
+        testee.convertFile(config, sourceFile.getParentFile(), sourceFile, sourceFile.getParentFile());
 
         // VERIFY
         assertThat(actualTargetFile).hasSameContentAs(expectedTargetFile);
@@ -59,7 +59,7 @@ public class Code2SvgTest {
     public void testConvertFile2() throws IOException {
 
         // PREPARE
-        final File configFile = copy("/code-2-svg-2.xml", "code-2-svg.xml");
+        final File configFile = copy("/code2svg-2.xml", "code2svg.xml");
         final File sourceFile = copy("/Alpha3CountryCode2.ddd", "Alpha3CountryCode.ddd");
         final File actualTargetFile = new File(sourceFile.getParentFile(), sourceFile.getName() + ".svg");
         final File expectedTargetFile = copy("/Alpha3CountryCode2.ddd.svg", "Alpha3CountryCode-expected.ddd.svg");
@@ -69,7 +69,7 @@ public class Code2SvgTest {
         final Code2Svg testee = new Code2Svg();
 
         // TEST
-        testee.convertFile(config, sourceFile);
+        testee.convertFile(config, sourceFile.getParentFile(), sourceFile, sourceFile.getParentFile());
 
         // VERIFY
         assertThat(actualTargetFile).hasSameContentAs(expectedTargetFile);
@@ -80,7 +80,7 @@ public class Code2SvgTest {
     public void testConvert() throws IOException {
 
         // PREPARE
-        final URL url = Code2Svg.class.getResource("/code-2-svg.xml");
+        final URL url = Code2Svg.class.getResource("/code2svg.xml");
         final String configXml = Utils4J.readAsString(url, "utf-8", 1024);
         final Code2SvgConfig config = JaxbUtils.unmarshal(configXml, (Class<?>[]) Code2SvgUtils.JAXB_CLASSES.toArray());
 

@@ -24,7 +24,8 @@
 				</executions>
 				
 			    <configuration>
-			    	<config-file>src/test/resources/code-2-svg.xml</config-file>
+			    	<config-file>src/test/resources/code2svg.xml</config-file>
+                    <target-dir>target/svg</target-dir>
 			        <source-files-dirs>			         
 			            <argument>src/test/resources</argument>
 			        </source-files-dirs>

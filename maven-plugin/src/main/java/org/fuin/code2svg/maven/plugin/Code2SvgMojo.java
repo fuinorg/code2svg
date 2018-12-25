@@ -29,7 +29,6 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.fuin.code2svg.core.Code2Svg;
 import org.fuin.code2svg.core.Code2SvgConfig;
 import org.fuin.code2svg.core.Code2SvgUtils;
-import org.fuin.code2svg.core.RegExprElement;
 import org.fuin.utils4j.JaxbUtils;
 import org.fuin.utils4j.Utils4J;
 import org.slf4j.Logger;
@@ -49,6 +48,12 @@ public final class Code2SvgMojo extends AbstractMojo {
      */
     @Parameter(name = "config-file")
     private String config;
+
+    /**
+     * Path and file of the target directory where to write the SVG files.
+     */
+    @Parameter(name = "target-dir")
+    private String targetDir;
 
     /**
      * List of files or directories to convert. Defaults to "src/main/resources".
@@ -79,6 +84,7 @@ public final class Code2SvgMojo extends AbstractMojo {
         init();
 
         LOG.info("config={}", config);
+        LOG.info("targetDir={}", targetDir);
         final Object[] args = sourceFilesDirs;
         LOG.info("sourceFiles={}", args);
 
@@ -92,9 +98,9 @@ public final class Code2SvgMojo extends AbstractMojo {
         for (int i = 0; i < sourceFilesDirs.length; i++) {
             final File file = new File(sourceFilesDirs[i]);
             if (file.isDirectory()) {
-                converter.convertDir(config, file);
+                converter.convertDir(config, file, new File(targetDir));
             } else {
-                converter.convertFile(config, file);
+                converter.convertFile(config, file.getParentFile(), file, new File(targetDir));
             }
         }
 
@@ -132,6 +138,25 @@ public final class Code2SvgMojo extends AbstractMojo {
      */
     public final void setConfigFile(final String configFile) {
         this.config = configFile;
+    }
+
+    /**
+     * Returns the path and the name of the target directory.
+     * 
+     * @return Target directory to write the SVG files to.
+     */
+    public final String getTargetDir() {
+        return targetDir;
+    }
+
+    /**
+     * Sets the path and name of the target directory.
+     * 
+     * @param targetDir
+     *            Target directory to write the SVG files to.
+     */
+    public final void setTargetDir(final String targetDir) {
+        this.targetDir = targetDir;
     }
 
     /**

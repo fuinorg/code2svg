@@ -25,7 +25,6 @@ import java.util.Arrays;
 import org.fuin.code2svg.core.Code2Svg;
 import org.fuin.code2svg.core.Code2SvgConfig;
 import org.fuin.code2svg.core.Code2SvgUtils;
-import org.fuin.code2svg.core.RegExprElement;
 import org.fuin.ext4logback.LogbackStandalone;
 import org.fuin.ext4logback.NewLogConfigFileParams;
 import org.fuin.utils4j.JaxbUtils;
@@ -48,9 +47,8 @@ public final class Code2SvgApp {
         }
     }
 
-    private static void execute(final String[] args) {
+    private static void execute(final File configFile, final File targetDir, final String[] args) {
 
-        final File configFile = new File(args[0]);
         final String configXml = Utils4J.readAsString(url(configFile), "utf-8", 1024);
         final Code2SvgConfig config = JaxbUtils.unmarshal(configXml, (Class<?>[]) Code2SvgUtils.JAXB_CLASSES.toArray());
 
@@ -58,9 +56,9 @@ public final class Code2SvgApp {
         for (int i = 1; i < args.length; i++) {
             final File file = new File(args[i]);
             if (file.isDirectory()) {
-                converter.convertDir(config, file);
+                converter.convertDir(config, file, targetDir);
             } else {
-                converter.convertFile(config, file);
+                converter.convertFile(config, file.getParentFile(), file, targetDir);
             }
         }
 
@@ -68,23 +66,32 @@ public final class Code2SvgApp {
 
     public static void main(String[] args) {
 
-        if (args == null || args.length < 2) {
-            System.out.println("Required arguments: <config-path-and-name> <file or dir 1> ... <file or dir N>");
+        if (args == null || args.length < 3) {
+            System.out.println("Required arguments: <config-path-and-name> <target dir> <source file or dir 1> ... <source file or dir N>");
             System.exit(1);
         }
 
         try {
-            // Initializes Logback by reading the XML config file.
-            // If the file does not exist, it will be created with some defaults.
-            // This is a convenience method that directly uses the main method's arguments.
-            final String[] args2 = Arrays.copyOfRange(args, 1, args.length - 1);
-            new LogbackStandalone().init(args2, new NewLogConfigFileParams("org.fuin.code2svg.app", "code-2-svg.log"));
+            new LogbackStandalone().init(new File("code2svg"), new NewLogConfigFileParams("org.fuin.code2svg.app", "code2svg"));
             LOG.info("Application running...");
-            execute(args);
+
+            final File configFile = new File(args[0]);
+            Utils4J.checkValidFile(configFile);
+            final File targetDir = new File(args[1]);
+            Utils4J.checkValidDir(targetDir);
+            final String[] args2 = Arrays.copyOfRange(args, 2, args.length - 1);
+
+            LOG.info("configFile={}", configFile);
+            LOG.info("targetDir={}", targetDir);
+            LOG.info("args2={}", Arrays.asList(args2));
+
+            execute(configFile, targetDir, args2);
+
             System.exit(0);
+
         } catch (RuntimeException ex) {
             ex.printStackTrace(System.err);
-            System.exit(1);
+            System.exit(2);
         }
 
     }
