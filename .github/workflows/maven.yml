@@ -53,3 +53,10 @@ jobs:
         OSS_SONATYPE_TOKEN: ${{ secrets.OSS_SONATYPE_TOKEN }}
         OSS_SONATYPE_GPG_PASSPHRASE: ${{ secrets.OSS_SONATYPE_GPG_PASSPHRASE }}
       run: ./mvnw clean deploy -U -B -P sonatype-oss-release --file pom.xml -s settings.xml
+      
+    - name: Save Application
+      uses: actions/upload-artifact@v2
+      with:
+        name: app
+        path: ${{ github.workspace }}/app/target/code2svg-app-0.1.0-SNAPSHOT-bin.**
+        retention-days: 365t

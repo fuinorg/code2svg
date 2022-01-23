@@ -58,43 +58,6 @@
 		<plugins>
 
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>wagon-maven-plugin</artifactId>
-				<version>1.0</version>
-				<executions>
-
-					<!-- Upload ZIP file -->
-					<execution>
-						<id>upload-zip</id>
-						<phase>deploy</phase>
-						<goals>
-							<goal>upload-single</goal>
-						</goals>
-						<configuration>
-							<fromFile>target/${project.artifactId}-${project.version}-bin.zip</fromFile>
-							<serverId>jfrog</serverId>
-							<url>https://fuinorg.jfrog.io/fuinorg/files/${project.artifactId}/</url>
-						</configuration>
-					</execution>
-
-					<!-- Upload targ.gz file -->
-					<execution>
-						<id>upload-tar-gz</id>
-						<phase>deploy</phase>
-						<goals>
-							<goal>upload-single</goal>
-						</goals>
-						<configuration>
-							<fromFile>target/${project.artifactId}-${project.version}-bin.tar.gz</fromFile>
-							<serverId>jfrog</serverId>
-							<url>https://fuinorg.jfrog.io/fuinorg/files/${project.artifactId}/</url>
-						</configuration>
-					</execution>
-
-				</executions>
-			</plugin>
-
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<version>3.1.1</version>
