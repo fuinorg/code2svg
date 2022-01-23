@@ -17,19 +17,14 @@
  */
 package org.fuin.code2svg.core;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 /**
  * Utility class for the package.
  */
 public final class Code2SvgUtils {
 
     /** Classes used for JAX-B serialization. */
-    public static final List<Class<?>> JAXB_CLASSES = Collections
-            .unmodifiableList(Arrays.asList(Code2SvgConfig.class, FileConfig.class, RegExprElement.class, StringElement.class,
-                    NumberElement.class, SingleLineCommentElement.class, MultiLineCommentElement.class, KeywordElement.class));
+    public static final Class<?>[] JAXB_CLASSES = new Class<?>[] { Code2SvgConfig.class, FileConfig.class, RegExprElement.class,
+            StringElement.class, NumberElement.class, SingleLineCommentElement.class, MultiLineCommentElement.class, KeywordElement.class };
 
     private Code2SvgUtils() {
         throw new UnsupportedOperationException();

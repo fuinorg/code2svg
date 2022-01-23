@@ -50,7 +50,7 @@ public final class Code2SvgApp {
     private static void execute(final File configFile, final File targetDir, final String[] args) {
 
         final String configXml = Utils4J.readAsString(url(configFile), "utf-8", 1024);
-        final Code2SvgConfig config = JaxbUtils.unmarshal(configXml, (Class<?>[]) Code2SvgUtils.JAXB_CLASSES.toArray());
+        final Code2SvgConfig config = JaxbUtils.unmarshal(configXml, Code2SvgUtils.JAXB_CLASSES);
 
         final Code2Svg converter = new Code2Svg();
         for (int i = 1; i < args.length; i++) {

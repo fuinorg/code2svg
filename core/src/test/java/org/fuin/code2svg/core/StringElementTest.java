@@ -20,7 +20,6 @@ package org.fuin.code2svg.core;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.custommonkey.xmlunit.XMLAssert;
-import org.fuin.code2svg.core.StringElement;
 import org.fuin.utils4j.JaxbUtils;
 import org.junit.Test;
 
@@ -62,7 +61,7 @@ public class StringElementTest {
         final StringElement testee = new StringElement("string", "fill: rgb(42, 0, 255)", true);
 
         // TEST
-        final String result = JaxbUtils.marshal(testee, (Class<?>[]) Code2SvgUtils.JAXB_CLASSES.toArray());
+        final String result = JaxbUtils.marshal(testee, Code2SvgUtils.JAXB_CLASSES);
 
         // VERIFY
         final String expected = "<string-element name =\"string\" css=\"fill: rgb(42, 0, 255)\" single=\"true\" />";
@@ -77,7 +76,7 @@ public class StringElementTest {
         final String xml = "<string-element name =\"string\" css=\"fill: rgb(42, 0, 255)\" />";
 
         // TEST
-        final StringElement testee = JaxbUtils.unmarshal(xml, (Class<?>[]) Code2SvgUtils.JAXB_CLASSES.toArray());
+        final StringElement testee = JaxbUtils.unmarshal(xml, Code2SvgUtils.JAXB_CLASSES);
 
         // VERIFY
         assertThat(testee).isNotNull();
@@ -113,7 +112,7 @@ public class StringElementTest {
         assertThat(testee.getPattern()).isEqualTo("'.*?'");
 
     }
-    
+
     // CHECKSTYLE:ON
 
 }

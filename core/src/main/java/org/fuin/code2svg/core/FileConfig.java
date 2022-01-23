@@ -25,6 +25,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Keywords element.
@@ -45,7 +46,8 @@ public final class FileConfig {
     @XmlAttribute(name = "height")
     private Integer height;
 
-    private transient Pattern compiledName;
+    @XmlTransient
+    private Pattern compiledName;
 
     /**
      * Package visible default constructor for deserialization.

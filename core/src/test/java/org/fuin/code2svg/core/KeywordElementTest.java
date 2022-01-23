@@ -68,7 +68,7 @@ public class KeywordElementTest {
         final KeywordElement testee = new KeywordElement("keyword", "fill: rgb(42, 0, 255)", keywords);
 
         // TEST
-        final String result = JaxbUtils.marshal(testee, (Class<?>[]) Code2SvgUtils.JAXB_CLASSES.toArray());
+        final String result = JaxbUtils.marshal(testee, Code2SvgUtils.JAXB_CLASSES);
 
         // VERIFY
         final String expected = "<keyword-element name =\"keyword\" css=\"fill: rgb(42, 0, 255)\">" + "<keyword>one</keyword>"
@@ -85,7 +85,7 @@ public class KeywordElementTest {
                 + "<keyword>two</keyword>" + "<keyword>three</keyword>" + "</keyword-element>";
 
         // TEST
-        final KeywordElement testee = JaxbUtils.unmarshal(xml, (Class<?>[]) Code2SvgUtils.JAXB_CLASSES.toArray());
+        final KeywordElement testee = JaxbUtils.unmarshal(xml, Code2SvgUtils.JAXB_CLASSES);
 
         // VERIFY
         assertThat(testee).isNotNull();

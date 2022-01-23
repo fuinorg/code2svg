@@ -20,7 +20,6 @@ package org.fuin.code2svg.core;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.custommonkey.xmlunit.XMLAssert;
-import org.fuin.code2svg.core.SingleLineCommentElement;
 import org.fuin.utils4j.JaxbUtils;
 import org.junit.Test;
 
@@ -62,7 +61,7 @@ public class SingleLineCommentElementTest {
         final SingleLineCommentElement testee = new SingleLineCommentElement("number", "fill: rgb(42, 0, 255)");
 
         // TEST
-        final String result = JaxbUtils.marshal(testee, (Class<?>[]) Code2SvgUtils.JAXB_CLASSES.toArray());
+        final String result = JaxbUtils.marshal(testee, Code2SvgUtils.JAXB_CLASSES);
 
         // VERIFY
         final String expected = "<sl-comment-element name =\"number\" css=\"fill: rgb(42, 0, 255)\" />";
@@ -77,7 +76,7 @@ public class SingleLineCommentElementTest {
         final String xml = "<sl-comment-element name =\"number\" css=\"fill: rgb(42, 0, 255)\" />";
 
         // TEST
-        final SingleLineCommentElement testee = JaxbUtils.unmarshal(xml, (Class<?>[]) Code2SvgUtils.JAXB_CLASSES.toArray());
+        final SingleLineCommentElement testee = JaxbUtils.unmarshal(xml, Code2SvgUtils.JAXB_CLASSES);
 
         // VERIFY
         assertThat(testee).isNotNull();
@@ -113,7 +112,7 @@ public class SingleLineCommentElementTest {
         assertThat(testee.getPattern()).isNotNull();
 
     }
-    
+
     // CHECKSTYLE:ON
 
 }

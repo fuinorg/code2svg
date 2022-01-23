@@ -90,7 +90,7 @@ public final class Code2SvgMojo extends AbstractMojo {
 
         final File configFile = new File(config);
         final String configXml = Utils4J.readAsString(url(configFile), "utf-8", 1024);
-        final Code2SvgConfig config = JaxbUtils.unmarshal(configXml, (Class<?>[]) Code2SvgUtils.JAXB_CLASSES.toArray());
+        final Code2SvgConfig config = JaxbUtils.unmarshal(configXml, Code2SvgUtils.JAXB_CLASSES);
 
         LOG.info("Converting '{}' sources to SVG files...", config.getFileExtension());
 

@@ -20,7 +20,6 @@ package org.fuin.code2svg.core;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.custommonkey.xmlunit.XMLAssert;
-import org.fuin.code2svg.core.RegExprElement;
 import org.fuin.utils4j.JaxbUtils;
 import org.junit.Test;
 
@@ -62,7 +61,7 @@ public class RegExprElementTest {
         final RegExprElement testee = new RegExprElement("string", "fill: rgb(42, 0, 255)", "\".*?\"");
 
         // TEST
-        final String result = JaxbUtils.marshal(testee, (Class<?>[]) Code2SvgUtils.JAXB_CLASSES.toArray());
+        final String result = JaxbUtils.marshal(testee, Code2SvgUtils.JAXB_CLASSES);
 
         // VERIFY
         final String expected = "<reg-expr-element name =\"string\" css=\"fill: rgb(42, 0, 255)\" pattern=\"&quot;.*?&quot;\" />";
@@ -77,7 +76,7 @@ public class RegExprElementTest {
         final String xml = "<reg-expr-element name =\"string\" css=\"fill: rgb(42, 0, 255)\" pattern=\"&quot;.*?&quot;\" />";
 
         // TEST
-        final RegExprElement testee = JaxbUtils.unmarshal(xml, (Class<?>[]) Code2SvgUtils.JAXB_CLASSES.toArray());
+        final RegExprElement testee = JaxbUtils.unmarshal(xml, Code2SvgUtils.JAXB_CLASSES);
 
         // VERIFY
         assertThat(testee).isNotNull();
