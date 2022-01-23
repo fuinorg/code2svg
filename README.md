@@ -1,10 +1,10 @@
 # code2svg
 A minimalistic converter that transforms code into SVG text with syntax highlighting.
 
-[![Build Status](https://jenkins.fuin.org/job/code2svg/badge/icon)](https://jenkins.fuin.org/job/code2svg/)
+[![Java Maven Build](https://github.com/fuinorg/code2svg/actions/workflows/maven.yml/badge.svg)](https://github.com/fuinorg/code2svg/actions/workflows/maven.yml)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.fuin/code2svg/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.fuin/code2svg/)
 [![LGPLv3 License](http://img.shields.io/badge/license-LGPLv3-blue.svg)](https://www.gnu.org/licenses/lgpl.html)
-[![Java Development Kit 1.8](https://img.shields.io/badge/JDK-1.8-green.svg)](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+[![Java Development Kit 11](https://img.shields.io/badge/JDK-11-green.svg)](https://openjdk.java.net/projects/jdk/11/)
 
 ## Modules
 The project is splitted into three separate modules: The core library, a maven plugin and the standalone application.
