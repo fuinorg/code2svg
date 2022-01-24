@@ -4,9 +4,9 @@ Java command line application that converts source files into SVG files with syn
 ## Usage
 
 ### Linux
-Download and unarchive the file to your disk: 
+Download and unarchive the TAR.GZ file to your disk: 
 
-https://fuinorg.jfrog.io/fuinorg/files/code2svg-app/code2svg-app-0.1.0-SNAPSHOT-bin.tar.gz
+https://github.com/fuinorg/code2svg/releases
 
 Execute the shell script to start the conversion:
 ```
@@ -23,9 +23,9 @@ Examples:
 
 
 ### Windows
-Download and unzip the file to your disk: 
+Download and unzip the ZIP file to your disk: 
 
-https://fuinorg.jfrog.io/fuinorg/files/code2svg-app/code2svg-app-0.1.0-SNAPSHOT-bin.zip
+https://github.com/fuinorg/code2svg/releases
 
 Execute the batch file to start the conversion:
 ```
