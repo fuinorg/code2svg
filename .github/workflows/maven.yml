@@ -58,10 +58,6 @@ jobs:
       run: |
         cat ${{ github.workspace }}/target/classes/project.properties | grep "^[^#;]" >> $GITHUB_ENV
 
-    - name: Echo version
-      run: |
-        echo "${{ env.maven_version }}"  
-
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
