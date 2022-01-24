@@ -6,3 +6,4 @@
 target
 META-INF
 *.log
+code2svg-logback.xml

@@ -18,15 +18,19 @@
 package org.fuin.code2svg.app;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
 
 import org.fuin.code2svg.core.Code2Svg;
 import org.fuin.code2svg.core.Code2SvgConfig;
 import org.fuin.code2svg.core.Code2SvgUtils;
-import org.fuin.ext4logback.LogbackStandalone;
 import org.fuin.ext4logback.NewLogConfigFileParams;
 import org.fuin.utils4j.JaxbUtils;
 import org.fuin.utils4j.Utils4J;
@@ -54,7 +58,7 @@ public final class Code2SvgApp {
         final Code2SvgConfig config = JaxbUtils.unmarshal(configXml, Code2SvgUtils.JAXB_CLASSES);
 
         final Code2Svg converter = new Code2Svg();
-        filenames.forEach( filename -> {
+        filenames.forEach(filename -> {
             final File file = new File(filename);
             if (file.isDirectory()) {
                 converter.convertDir(config, file, targetDir);
@@ -65,15 +69,59 @@ public final class Code2SvgApp {
 
     }
 
+    private static void writeInitialLogbackXml(final File logbackXmlFile, final NewLogConfigFileParams params) throws IOException {
+        final String logFilename = params.getLogFilename();
+        // @formatter:off
+        final String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" 
+                + "<configuration>\n"
+                + "    <appender name=\"FILE\" class=\"ch.qos.logback.core.rolling.RollingFileAppender\">\n"
+                + "        <file>${log_path}/" + logFilename + ".log</file>\n"
+                + "        <rollingPolicy class=\"ch.qos.logback.core.rolling.TimeBasedRollingPolicy\">\n"
+                + "            <fileNamePattern>" + logFilename + ".%d{yyyy-MM-dd}.log</fileNamePattern>\n"
+                + "            <maxHistory>30</maxHistory>\n" 
+                + "        </rollingPolicy>\n"
+                + "        <append>true</append>\n"
+                + "        <layout class=\"ch.qos.logback.classic.PatternLayout\">\n"
+                + "            <pattern>" + params.getLayoutPattern() + "</pattern>\n" 
+                + "        </layout>\n"
+                + "    </appender>\n"
+                + "    <appender name=\"CONSOLE\" class=\"ch.qos.logback.core.ConsoleAppender\">"
+                + "        <layout class=\"ch.qos.logback.classic.PatternLayout\">"
+                + "            <pattern>" + params.getLayoutPattern() + "</pattern>\n"
+                + "        </layout>"
+                + "    </appender>"                
+                + "    <root level=\"" + params.getRootLevel() + "\">\n"
+                + "        <appender-ref ref=\"FILE\" />\n" 
+                + "        <appender-ref ref=\"CONSOLE\" />\n" 
+                + "    </root>\n" 
+                + "    <logger name=\"" + params.getPkgName() + "\" level=\"" + params.getPkgLevel() + "\" />\n" 
+                + "</configuration>\n";
+        // @formatter:on
+        try (final Writer fw = new OutputStreamWriter(new FileOutputStream(logbackXmlFile), Charset.forName("UTF-8"))) {
+            fw.write(xml);
+        }
+    }
+
+    private static void initLogback() {
+        final File logbackXmlFile = new File("code2svg-logback.xml");
+        if (!logbackXmlFile.exists()) {
+            try {
+                writeInitialLogbackXml(logbackXmlFile, new NewLogConfigFileParams("org.fuin.code2svg.app", "code2svg"));
+            } catch (final IOException ex) {
+                throw new RuntimeException("Failed to create initial logback XML configuration", ex);
+            }
+        }
+    }
+
     public static void main(String[] args) {
 
         if (args == null || args.length < 3) {
             System.out.println("Required arguments: <config-path-and-name> <target dir> <source file or dir 1> ... <source file or dir N>");
             System.exit(1);
         }
-        
+
         try {
-            new LogbackStandalone().init(new File("code2svg"), new NewLogConfigFileParams("org.fuin.code2svg.app", "code2svg"));
+            initLogback();
             LOG.info("Application running...");
 
             final File configFile = new File(args[0]);
