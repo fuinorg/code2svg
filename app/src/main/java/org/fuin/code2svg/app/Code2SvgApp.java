@@ -21,6 +21,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.List;
 
 import org.fuin.code2svg.core.Code2Svg;
 import org.fuin.code2svg.core.Code2SvgConfig;
@@ -47,20 +48,20 @@ public final class Code2SvgApp {
         }
     }
 
-    private static void execute(final File configFile, final File targetDir, final String[] args) {
+    private static void execute(final File configFile, final File targetDir, final List<String> filenames) {
 
         final String configXml = Utils4J.readAsString(url(configFile), "utf-8", 1024);
         final Code2SvgConfig config = JaxbUtils.unmarshal(configXml, Code2SvgUtils.JAXB_CLASSES);
 
         final Code2Svg converter = new Code2Svg();
-        for (int i = 1; i < args.length; i++) {
-            final File file = new File(args[i]);
+        filenames.forEach( filename -> {
+            final File file = new File(filename);
             if (file.isDirectory()) {
                 converter.convertDir(config, file, targetDir);
             } else {
                 converter.convertFile(config, file.getParentFile(), file, targetDir);
             }
-        }
+        });
 
     }
 
@@ -70,7 +71,7 @@ public final class Code2SvgApp {
             System.out.println("Required arguments: <config-path-and-name> <target dir> <source file or dir 1> ... <source file or dir N>");
             System.exit(1);
         }
-
+        
         try {
             new LogbackStandalone().init(new File("code2svg"), new NewLogConfigFileParams("org.fuin.code2svg.app", "code2svg"));
             LOG.info("Application running...");
@@ -79,13 +80,13 @@ public final class Code2SvgApp {
             Utils4J.checkValidFile(configFile);
             final File targetDir = new File(args[1]);
             Utils4J.checkValidDir(targetDir);
-            final String[] args2 = Arrays.copyOfRange(args, 2, args.length - 1);
+            final List<String> filenames = Arrays.asList(Arrays.copyOfRange(args, 2, args.length));
 
             LOG.info("configFile={}", configFile);
             LOG.info("targetDir={}", targetDir);
-            LOG.info("args2={}", Arrays.asList(args2));
+            LOG.info("filenames={}", filenames);
 
-            execute(configFile, targetDir, args2);
+            execute(configFile, targetDir, filenames);
 
             System.exit(0);
 

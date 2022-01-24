@@ -10,13 +10,13 @@ https://github.com/fuinorg/code2svg/releases
 
 Execute the shell script to start the conversion:
 ```
-./code2svg.sh CONFIG_NAME FILE_OR_DIR_1 ... FILE_OR_DIR_N
+./code2svg.sh (CONFIG_NAME) (TARGET_DIR) (FILE_OR_DIR_1) ... (FILE_OR_DIR_N)
 ```
 
 Examples:
 ```
-./code2svg.sh example/code-2-svg.xml example/Alpha3CountryCode-lf.ddd
-./code2svg.sh example/code-2-svg.xml example/
+./code2svg.sh example/code-2-svg.xml example example/Alpha3CountryCode-lf.ddd
+./code2svg.sh example/code-2-svg.xml example example/
 ```
 
 **Tip:** You can just execute the file ``./code2svg-example.sh`` without any arguments to run the above sample.
@@ -29,13 +29,13 @@ https://github.com/fuinorg/code2svg/releases
 
 Execute the batch file to start the conversion:
 ```
-code2svg.bat CONFIG_NAME FILE_OR_DIR_1 ... FILE_OR_DIR_N
+code2svg.bat (CONFIG_NAME) (TARGET_DIR) (FILE_OR_DIR_1) ... (FILE_OR_DIR_N)
 ```
 
 Examples:
 ```
-code2svg.bat example/code-2-svg.xml example/Alpha3CountryCode-crlf.ddd
-code2svg.bat example/code-2-svg.xml example/
+code2svg.bat example/code-2-svg.xml example example/Alpha3CountryCode-crlf.ddd
+code2svg.bat example/code-2-svg.xml example example/
 ```
 
 **Tip:** You can just execute the file ``code2svg-example.bat`` without any arguments to run the above sample.

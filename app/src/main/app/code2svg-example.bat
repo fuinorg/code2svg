@@ -1,2 +1,2 @@
-java -classpath *;lib/* org.fuin.code2svg.app.Code2SvgApp  example/code-2-svg.xml example/Alpha3CountryCode-crlf.ddd
+java -classpath *;lib/* org.fuin.code2svg.app.Code2SvgApp example example/code-2-svg.xml example/Alpha3CountryCode-crlf.ddd
 ECHO "Converted 'example/Alpha3CountryCode-crlf.ddd' to 'example/Alpha3CountryCode-crlf.ddd.svg'"
