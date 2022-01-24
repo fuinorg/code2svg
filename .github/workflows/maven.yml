@@ -62,12 +62,11 @@ jobs:
       run: |
         echo "${{ env.maven_version }}"  
 
-#    - name: Release
-#      uses: softprops/action-gh-release@v1
-#      if: startsWith(github.ref, 'refs/tags/')
-#      with:
-#        draft: true
-#        files: |
-#          ${{ github.workspace }}/app/target/code2svg-app-${{ env.maven_version }}-bin.zip
-#          ${{ github.workspace }}/app/target/code2svg-app-${{ env.maven_version }}-bin.tar.gz
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        draft: true
+        files: |
+          ${{ github.workspace }}/app/target/code2svg-app-${{ env.maven_version }}-bin.zip
+          ${{ github.workspace }}/app/target/code2svg-app-${{ env.maven_version }}-bin.tar.gz
           

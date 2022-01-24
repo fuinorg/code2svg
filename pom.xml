@@ -28,11 +28,9 @@
 
 	<modules>
 		<module>core</module>
-		<!--
 		<module>app</module>
 		<module>maven-plugin</module>
 		<module>maven-test</module>
-		-->
 	</modules>
 
 	<build>
