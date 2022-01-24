@@ -56,7 +56,7 @@ jobs:
       
     - name: Project properties as ENV variables
       run: |
-        cat ${{ github.workspace }}/target/classes/project.properties >> $GITHUB_ENV
+        cat ${{ github.workspace }}/target/classes/project.properties | grep "^[^#;]" >> $GITHUB_ENV
 
     - name: Echo version
       run: |
