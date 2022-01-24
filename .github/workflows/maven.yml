@@ -58,10 +58,32 @@ jobs:
       run: |
         cat ${{ github.workspace }}/target/classes/project.properties | grep "^[^#;]" >> $GITHUB_ENV
 
+    - name: Tag on build
+      uses: actions/github-script@v3
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}          
+        script: |
+          try {
+              await github.git.deleteRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: "tags/${{ env.maven_version }}"
+              })
+          } catch (e) {
+            console.log("The ${{ env.maven_version }} tag doesn't exist yet" + e)
+          }
+          await github.git.createRef({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            ref: "refs/tags/${{ env.maven_version }}",
+            sha: context.sha
+          })
+
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
         name: ${{ env.maven_version }}
+        tag_name: ${{ env.maven_version }}
         files: |
           ${{ github.workspace }}/app/target/code2svg-app-${{ env.maven_version }}-bin.zip
           ${{ github.workspace }}/app/target/code2svg-app-${{ env.maven_version }}-bin.tar.gz
