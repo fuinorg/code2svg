@@ -61,7 +61,7 @@ jobs:
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
-        draft: true
+        name: ${{ env.maven_version }}
         files: |
           ${{ github.workspace }}/app/target/code2svg-app-${{ env.maven_version }}-bin.zip
           ${{ github.workspace }}/app/target/code2svg-app-${{ env.maven_version }}-bin.tar.gz
