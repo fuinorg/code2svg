@@ -70,7 +70,7 @@ jobs:
                 ref: "tags/${{ env.maven_version }}"
               })
           } catch (e) {
-            console.log("The ${{ env.maven_version }} tag doesn't exist yet" + e)
+            console.log("The ${{ env.maven_version }} tag doesn't exist yet: " + e)
           }
           await github.git.createRef({
             owner: context.repo.owner,
